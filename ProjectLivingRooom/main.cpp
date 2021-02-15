@@ -22,7 +22,7 @@ GLfloat camX = 0.0f;
 GLfloat camZ = 0.0f;
 
 //light
-GLfloat   lightPosition[] = { 10, 3, 0, 1 };
+GLfloat   lightPosition[] = { 1, 3, 0, 1 };
 GLfloat   lightDirection[] = { 0, 0, 10, 0 };
 GLfloat   diffuseLight[] = { 0, 1, 0, 1 };
 GLfloat   ambientLight[] = { 0.2, 0.2, 0.2, 1 };
@@ -30,6 +30,11 @@ GLfloat   ambientLight[] = { 0.2, 0.2, 0.2, 1 };
 void init() {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glEnable(GL_DEPTH_TEST);
+
+    //enable lighing
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glShadeModel(GL_SMOOTH);
 
 }
 /*
