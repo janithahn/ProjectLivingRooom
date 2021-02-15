@@ -27,6 +27,8 @@ GLfloat   lightDirection[] = { 0, 0, 10, 0 };
 GLfloat   diffuseLight[] = { 0, 1, 0, 1 };
 GLfloat   ambientLight[] = { 0.2, 0.2, 0.2, 1 };
 
+GLfloat globalAmbient[] = { 0.8, 0.8, 0.8, 1.0 };
+
 void init() {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glEnable(GL_DEPTH_TEST);
@@ -36,11 +38,9 @@ void init() {
     glEnable(GL_LIGHT0);
     glShadeModel(GL_SMOOTH);
 
+    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globalAmbient);
+
 }
-/*
-Use this function to identify the transformations(translation/ rotation/ scaling) if needed
-(call this function at the place you need to determine the orientation of the axes)
-*/
 
 //init light
 void initLight() {
@@ -209,6 +209,11 @@ void keyboard(unsigned char key, int x, int y) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     if (key == 'C')
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+    if (key == 'l')
+        glDisable(GL_LIGHT0);
+    if (key == 'L')
+        glEnable(GL_LIGHT0);
 
     glutPostRedisplay();
 
