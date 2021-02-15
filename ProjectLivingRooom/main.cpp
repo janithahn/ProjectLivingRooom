@@ -113,7 +113,7 @@ GLuint tex;
 void initTexture() {
 
     int width, height;
-    unsigned char* image = SOIL_load_image("C:/work/CS308/Project/ProjectLivingRooom/floortexture.png", &width, &height, 0, SOIL_LOAD_RGB);
+    unsigned char* image = SOIL_load_image("C:/work/CS308/Project/ProjectLivingRooom/bricks.jpg", &width, &height, 0, SOIL_LOAD_RGB);
 
 
     if (!image) {
@@ -161,11 +161,14 @@ void drawWalls() {
     glBegin(GL_QUADS);
     //glColor3f(.245, .222, .179);
     //glTexCoord3f(x, y, z);
-    glTexCoord2f(0.5, 0.5);
-    glVertex3f(x, y, z);
-    glVertex3f(x, -y, z);
-    glVertex3f(-x, -y, z);
-    glVertex3f(-x, y, z);
+    glTexCoord3f(x, y, z);
+        glVertex3f(x, y, z);
+    glTexCoord3f(x, -y, z);
+        glVertex3f(x, -y, z);
+    glTexCoord3f(-x, -y, z);
+        glVertex3f(-x, -y, z);
+    glTexCoord3f(-x, y, z);
+        glVertex3f(-x, y, z);
     glEnd();
 
     // FRONT
@@ -219,17 +222,13 @@ void init() {
     glEnable(GL_DEPTH_TEST);
 
     //texture
-    glEnable(GL_TEXTURE_2D);
+    //glEnable(GL_TEXTURE_2D);
     //loadTexture();
-
-    initTexture();
 
     //enable lighing
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
     glShadeModel(GL_SMOOTH);
-    glEnable(GL_NORMALIZE);
-
     initLight();
 
     (GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
@@ -237,7 +236,11 @@ void init() {
     // Enabling the color tracking of each faces of the materials. this enables the color visibility of the materials
     glEnable(GL_COLOR_MATERIAL);
 
+    glEnable(GL_NORMALIZE);
+
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globalAmbient);
+
+    initTexture();
 
 }
 
@@ -267,7 +270,10 @@ void display() {
     glPushMatrix();
     glTranslatef(0.0, 10.0, 0.0);
 
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, tex);
     drawWalls();
+    glDisable(GL_TEXTURE_2D);
 
     glPopMatrix();
 
