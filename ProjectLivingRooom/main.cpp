@@ -99,7 +99,7 @@ void DrawGrid() {
 GLuint texture;
 
 void loadTexture() {
-    texture = SOIL_load_OGL_texture("C:/work/CS308/Project/ProjectLivingRooom/floortexture.png", SOIL_LOAD_RGBA, SOIL_CREATE_NEW_ID, 0);
+    texture = SOIL_load_OGL_texture("C:/work/CS308/Project/ProjectLivingRooom/Textures/bricks.jpg", SOIL_LOAD_RGBA, SOIL_CREATE_NEW_ID, 0);
 
     glBindTexture(GL_TEXTURE_2D, texture);
 
@@ -113,7 +113,7 @@ GLuint tex;
 void initTexture() {
 
     int width, height;
-    unsigned char* image = SOIL_load_image("C:/work/CS308/Project/ProjectLivingRooom/bricks.jpg", &width, &height, 0, SOIL_LOAD_RGB);
+    unsigned char* image = SOIL_load_image("C:/work/CS308/Project/ProjectLivingRooom/Textures/bricks.jpg", &width, &height, 0, SOIL_LOAD_RGB);
 
 
     if (!image) {
@@ -155,7 +155,7 @@ void drawWalls() {
     glBindTexture(GL_TEXTURE_2D, tex);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexCoord2f(0.5, 0.5);
+    //glTexCoord2f(0.5, 0.5);
 
     // BACK
     glBegin(GL_QUADS);
@@ -252,7 +252,7 @@ void display() {
     glPushMatrix();
 
     // camera orientation (eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ)
-    gluLookAt(0.0 + camX, 2.0 + camY, 5.0 + camZ, 0, 0, 0, 0, 1.0, 0);
+    gluLookAt(0.0 + camX, 8.0 + camY, 8.0 + camZ, 0, 5, 0, 0, 1.0, 0);
     //initLight();
 
     // move the object frame using keyboard keys
@@ -306,6 +306,11 @@ void keyboard(unsigned char key, int x, int y) {
     if (key == 's')
         camY -= 0.5;
 
+    if (key == 'd')
+        camX += 0.5;
+    if (key == 'a')
+        camX -= 0.5;
+
     if (key == 'c')
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     if (key == 'C')
@@ -353,7 +358,7 @@ int main(int argc, char** argv) {
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGBA);
-    glutInitWindowSize(800, 500);
+    glutInitWindowSize(800, 600);
     glutInitWindowPosition(250, 250);
     glutCreateWindow("Living Room");
     glutDisplayFunc(display);
