@@ -3,6 +3,12 @@
 //#include <GL/freeglut.h>
 #include <math.h>
 #include <SOIL2.h>
+#include <string>
+#include <filesystem>
+#include <direct.h>
+#define GetCurrentDir _getcwd
+
+using namespace std;
 
 // vertices for the cube
 GLfloat x = 10.0f;
@@ -95,24 +101,75 @@ void DrawGrid() {
     glEnd();
 }
 
-//textures
-GLuint texture;
+//texture image files
+const char* image_files[4] = {
+    "C:/work/CS308/Project/ProjectLivingRooom/Textures/bricks.jpg",
+    "C:/work/CS308/Project/ProjectLivingRooom/Textures/ceiling.jpg",
+    "C:/work/CS308/Project/ProjectLivingRooom/Textures/floor.jpg",
+    "C:/work/CS308/Project/ProjectLivingRooom/Textures/wall_blue.jpg"
+};
+
+//texture func 1
+GLuint texture[4];
 
 void loadTexture() {
-    texture = SOIL_load_OGL_texture("C:/work/CS308/Project/ProjectLivingRooom/Textures/bricks.jpg", SOIL_LOAD_RGBA, SOIL_CREATE_NEW_ID, 0);
+    for (int i = 0; i < 4; i++) {
+        texture[i] = SOIL_load_OGL_texture(image_files[i], SOIL_LOAD_RGBA, SOIL_CREATE_NEW_ID, 0);
 
-    glBindTexture(GL_TEXTURE_2D, texture);
+        glBindTexture(GL_TEXTURE_2D, texture[i]);
 
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    }
 }
 
-//texture 2
+//texture func 2
 GLuint tex;
+GLuint tex_array[4];
+
+std::string get_current_dir() {
+    char buff[FILENAME_MAX]; //create string buffer to hold path
+    GetCurrentDir(buff, FILENAME_MAX);
+    string current_working_dir(buff);
+    return current_working_dir;
+}
 
 void initTexture() {
 
-    int width, height;
+    for (int i = 0; i < 4; i++) {
+
+        int width, height;
+        
+        unsigned char* image = SOIL_load_image(image_files[i], &width, &height, 0, SOIL_LOAD_RGB);
+
+        if (!image) {
+            std::cout << "Failed to load texture: " << sizeof(image) << std::endl;
+        }
+        else {
+            std::cout << i << " " << &image << std::endl;
+        }
+
+        unsigned char data[] =
+        {
+            128, 128, 128, 255,
+            255, 0, 0, 255,
+            0, 255, 0, 255,
+            0, 0, 255, 255
+        };
+
+        glGenTextures(1, &tex_array[i]);
+        glBindTexture(GL_TEXTURE_2D, tex_array[i]);
+
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+    }
+
+    /*int width, height;
     unsigned char* image = SOIL_load_image("C:/work/CS308/Project/ProjectLivingRooom/Textures/bricks.jpg", &width, &height, 0, SOIL_LOAD_RGB);
 
 
@@ -141,7 +198,7 @@ void initTexture() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);*/
 
     // Use the following line in order to load the created texture map instead of the image
     //glTexImage2D( GL_TEXTURE_2D, 0,GL_RGBA, 2, 2, 0, GL_RGBA, GL_UNSIGNED_BYTE, data );    
@@ -151,16 +208,15 @@ void initTexture() {
 void drawWalls() {
     //glTranslatef(0.0, 1.6, 0.0);
 
-    //texture
-    glBindTexture(GL_TEXTURE_2D, tex);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    //glTexCoord2f(0.5, 0.5);
+    //texture param
 
     // BACK
+    //texture
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
     glBegin(GL_QUADS);
-    //glColor3f(.245, .222, .179);
-    //glTexCoord3f(x, y, z);
     glTexCoord3f(x, y, z);
         glVertex3f(x, y, z);
     glTexCoord3f(x, -y, z);
@@ -170,60 +226,102 @@ void drawWalls() {
     glTexCoord3f(-x, y, z);
         glVertex3f(-x, y, z);
     glEnd();
+    // END BACK
 
     // FRONT
+    //texture
+    glBindTexture(GL_TEXTURE_2D, texture[3]);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
     glBegin(GL_QUADS);
-    //glColor3f(.245, .222, .179);
-    glVertex3f(x, y, -z);
-    glVertex3f(-x, y, -z);
-    glVertex3f(-x, -y, -z);
-    glVertex3f(x, -y, -z);
+    glTexCoord3f(x, y, -z);
+        glVertex3f(x, y, -z);
+    glTexCoord3f(-x, y, -z);
+        glVertex3f(-x, y, -z);
+    glTexCoord3f(-x, -y, -z);
+        glVertex3f(-x, -y, -z);
+    glTexCoord3f(x, -y, -z);
+        glVertex3f(x, -y, -z);
     glEnd();
+    // END FRONT
 
     // LEFT
-    glBegin(GL_QUADS);
-    //glColor3f(.245, .222, .179);
-    glVertex3f(-x, -y, -z);
-    glVertex3f(-x, y, -z);
-    glVertex3f(-x, y, z);
-    glVertex3f(-x, -y, z);
-    glEnd();
+    //texture
+    //glBindTexture(GL_TEXTURE_2D, tex_array[3]);
+    //glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    //glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-    //Right
     glBegin(GL_QUADS);
-    //glColor3f(.245, .222, .179);
-    glVertex3f(x, y, z);
-    glVertex3f(x, -y, z);
-    glVertex3f(x, -y, -z);
-    glVertex3f(x, y, -z);
+    glTexCoord3f(-x, -y, -z);
+        glVertex3f(-x, -y, -z);
+    glTexCoord3f(-x, y, -z);
+        glVertex3f(-x, y, -z);
+    glTexCoord3f(-x, y, z);
+        glVertex3f(-x, y, z);
+    glTexCoord3f(-x, -y, z);
+        glVertex3f(-x, -y, z);
     glEnd();
+    // LEFT END
 
-    //Top
-    glBegin(GL_QUADS);
-    glColor3f(.188, .143, .143);
-    glVertex3f(x, y, -z);
-    glVertex3f(x, y, z);
-    glVertex3f(-x, y, z);
-    glVertex3f(-x, y, -z);
-    glEnd();
+    // RIGHT
+    //texture
+    //glBindTexture(GL_TEXTURE_2D, tex_array[3]);
+    //glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    //glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-    //Bottom
     glBegin(GL_QUADS);
-    glColor3f(.160, .82, .45);
-    glVertex3f(x, -y, z);
-    glVertex3f(x, -y, -z);
-    glVertex3f(-x, -y, -z);
-    glVertex3f(-x, -y, z);
+    glTexCoord3f(x, y, z);
+        glVertex3f(x, y, z);
+    glTexCoord3f(x, -y, z);
+        glVertex3f(x, -y, z);
+    glTexCoord3f(x, -y, -z);
+        glVertex3f(x, -y, -z);
+    glTexCoord3f(x, y, -z);
+        glVertex3f(x, y, -z);
     glEnd();
+    // RIGHT END
+
+    // TOP
+    //texture
+    glBindTexture(GL_TEXTURE_2D, texture[1]);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    glBegin(GL_QUADS);
+    glTexCoord3f(x, y, -z);
+        glVertex3f(x, y, -z);
+    glTexCoord3f(x, y, z);
+        glVertex3f(x, y, z);
+    glTexCoord3f(-x, y, z);
+        glVertex3f(-x, y, z);
+    glTexCoord3f(-x, y, -z);
+        glVertex3f(-x, y, -z);
+    glEnd();
+    // END TOP
+
+    //BOTTOM
+    //texture
+    glBindTexture(GL_TEXTURE_2D, texture[2]);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    glBegin(GL_QUADS);
+    glTexCoord3f(x, -y, z);
+        glVertex3f(x, -y, z);
+    glTexCoord3f(x, -y, -z);
+        glVertex3f(x, -y, -z);
+    glTexCoord3f(-x, -y, -z);
+        glVertex3f(-x, -y, -z);
+    glTexCoord3f(-x, -y, z);
+        glVertex3f(-x, -y, z);
+    glEnd();
+    // END BOTTOM
 }
 
 void init() {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glEnable(GL_DEPTH_TEST);
-
-    //texture
-    //glEnable(GL_TEXTURE_2D);
-    //loadTexture();
 
     //enable lighing
     glEnable(GL_LIGHTING);
@@ -240,7 +338,10 @@ void init() {
 
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globalAmbient);
 
-    initTexture();
+    //texture
+    glEnable(GL_TEXTURE_2D);
+    //initTexture();
+    loadTexture();
 
 }
 
@@ -270,10 +371,10 @@ void display() {
     glPushMatrix();
     glTranslatef(0.0, 10.0, 0.0);
 
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, tex);
+    //glEnable(GL_TEXTURE_2D);
+    //glBindTexture(GL_TEXTURE_2D, tex_array[1]);
     drawWalls();
-    glDisable(GL_TEXTURE_2D);
+    //glDisable(GL_TEXTURE_2D);
 
     glPopMatrix();
 
