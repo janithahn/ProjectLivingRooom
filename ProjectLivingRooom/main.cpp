@@ -6,14 +6,15 @@
 #include <string>
 #include <filesystem>
 #include <direct.h>
+#include "table.h"
 #define GetCurrentDir _getcwd
 
 using namespace std;
 
 // vertices for the cube
-GLfloat x = 10.0f;
+GLfloat x = 20.0f;
 GLfloat y = 10.0f;
-GLfloat z = 10.0f;
+GLfloat z = 20.0f;
 
 // variables to move outermost Object Frame (to move all the rendered environment)
 GLfloat moveX = 0.0f;
@@ -39,8 +40,8 @@ GLfloat   ambientLight[] = { 0.4, 0.4, 0.4, 1.0 };
 //light 1
 GLfloat L1_Ambient[] = { 0.5, 0.5, 0.5, 1.0 };
 GLfloat L1_Diffuse[] = { 0.7, 0.7, 0.7, 1.0 };
-GLfloat L1_Specular[] = { 0.0, 1.0, 0.0, 1.0 };   //Declaration of the specular component of the light_1
-GLfloat L1_postion[] = { -5, 5, 0, 1.0 };
+GLfloat L1_Specular[] = { 1.0, 1.0, 0.0, 1.0 };   //Declaration of the specular component of the light_1
+GLfloat L1_postion[] = { 10, 0, -10, 1.0 };
 
 GLfloat globalAmbient[] = { 0.8, 0.8, 0.8, 1.0 };
 
@@ -53,7 +54,7 @@ void initLight() {
     glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 128);
     glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, lightDirection);
 
-    glLightfv(GL_LIGHT1, GL_AMBIENT, L1_Ambient);
+    //glLightfv(GL_LIGHT1, GL_AMBIENT, L1_Ambient);
     glLightfv(GL_LIGHT1, GL_DIFFUSE, L1_Diffuse);
     glLightfv(GL_LIGHT1, GL_SPECULAR, L1_Specular);
     glLightfv(GL_LIGHT1, GL_POSITION, L1_postion);
@@ -102,19 +103,20 @@ void DrawGrid() {
 }
 
 //texture image files
-const char* image_files[5] = {
+const char* image_files[6] = {
     "C:/work/CS308/Project/ProjectLivingRooom/Textures/bricks.jpg",
     "C:/work/CS308/Project/ProjectLivingRooom/Textures/ceiling.jpg",
     "C:/work/CS308/Project/ProjectLivingRooom/Textures/floor.jpg",
     "C:/work/CS308/Project/ProjectLivingRooom/Textures/wall_blue.jpg",
-    "C:/work/CS308/Project/ProjectLivingRooom/Textures/wall_grey.jpg"
+    "C:/work/CS308/Project/ProjectLivingRooom/Textures/wall_grey.jpg",
+    "C:/work/CS308/Project/ProjectLivingRooom/Textures/wall_butter.jpg"
 };
 
 //texture func 1
-GLuint texture[5];
+GLuint texture[6];
 
 void loadTexture() {
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 6; i++) {
         texture[i] = SOIL_load_OGL_texture(image_files[i], SOIL_LOAD_RGBA, SOIL_CREATE_NEW_ID, 0);
 
         glBindTexture(GL_TEXTURE_2D, texture[i]);
@@ -178,7 +180,7 @@ void drawWalls() {
 
     // BACK
     //texture
-    glBindTexture(GL_TEXTURE_2D, texture[0]);
+    glBindTexture(GL_TEXTURE_2D, texture[5]);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
@@ -285,13 +287,23 @@ void drawWalls() {
     // END BOTTOM
 }
 
+void drawTable() {
+    Table mainTable;
+    glPushMatrix();
+    glTranslatef(2, -4, -4);
+    glScalef(2.0f, 2.0f, 2.0f);
+    //glRotatef(-30.0, 0.0, 1.0, 0.0);
+    mainTable.drawTable();
+    glPopMatrix();
+}
+
 void init() {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glEnable(GL_DEPTH_TEST);
 
     //enable lighing
     glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
+    //glEnable(GL_LIGHT0);
     glShadeModel(GL_SMOOTH);
     initLight();
 
@@ -302,7 +314,7 @@ void init() {
 
     glEnable(GL_NORMALIZE);
 
-    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globalAmbient);
+    //glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globalAmbient);
 
     //texture
     glEnable(GL_TEXTURE_2D);
@@ -341,6 +353,7 @@ void display() {
     //glBindTexture(GL_TEXTURE_2D, tex_array[1]);
     drawWalls();
     //glDisable(GL_TEXTURE_2D);
+    drawTable();
 
     glPopMatrix();
 
