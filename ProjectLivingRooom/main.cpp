@@ -1,12 +1,13 @@
 #include <iostream>
-#include <GL/glut.h>
-//#include <GL/freeglut.h>
+//#include <GL/glut.h>
+#include <GL/freeglut.h>
 #include <math.h>
 #include <SOIL2.h>
 #include <string>
 #include <filesystem>
 #include <direct.h>
 #include "table.h"
+#include "lamp.h"
 #define GetCurrentDir _getcwd
 
 using namespace std;
@@ -39,9 +40,9 @@ GLfloat   ambientLight[] = { 0.4, 0.4, 0.4, 1.0 };
 
 //light 1
 GLfloat L1_Ambient[] = { 0.5, 0.5, 0.5, 1.0 };
-GLfloat L1_Diffuse[] = { 0.7, 0.7, 0.7, 1.0 };
+GLfloat L1_Diffuse[] = { 1, 1, 1, 5.0 };
 GLfloat L1_Specular[] = { 1.0, 1.0, 0.0, 1.0 };   //Declaration of the specular component of the light_1
-GLfloat L1_postion[] = { 10, 0, -10, 1.0 };
+GLfloat L1_postion[] = { 0, -3, -4, 1.0 };
 
 GLfloat globalAmbient[] = { 0.8, 0.8, 0.8, 1.0 };
 
@@ -297,6 +298,16 @@ void drawTable() {
     glPopMatrix();
 }
 
+void drawTableLamp() {
+    Lamp tableLamp;
+    glPushMatrix();
+    glTranslatef(0, -3, -4);
+    glScalef(3.0f, 3.0f, 3.0f);
+    //glRotatef(-30.0, 0.0, 1.0, 0.0);
+    tableLamp.drawTableLamp();
+    glPopMatrix();
+}
+
 void init() {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glEnable(GL_DEPTH_TEST);
@@ -354,6 +365,7 @@ void display() {
     drawWalls();
     //glDisable(GL_TEXTURE_2D);
     drawTable();
+    drawTableLamp();
 
     glPopMatrix();
 
@@ -396,14 +408,14 @@ void keyboard(unsigned char key, int x, int y) {
     if (key == 'C')
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-    if (key == 'l')
+    if (key == ')')
         glDisable(GL_LIGHT0);
-    if (key == 'L')
+    if (key == '0')
         glEnable(GL_LIGHT0);
 
-    if (key == 'k')
+    if (key == '!')
         glDisable(GL_LIGHT1);
-    if (key == 'K')
+    if (key == '1')
         glEnable(GL_LIGHT1);
 
     glutPostRedisplay();

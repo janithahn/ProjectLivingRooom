@@ -95,7 +95,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\Libraries\freeglut\lib\x64;$(SolutionDir)\Libraries\SOIL2\lib;$(SolutionDir)\Libraries\GL_files\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\Libraries\freeglut\lib;$(SolutionDir)\Libraries\SOIL2\lib;$(SolutionDir)\Libraries\GL_files\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glu32.lib;glut32.lib;soil2-debug.lib;soil2.lib;freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -147,9 +147,11 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="table.cpp" />
+    <ClCompile Include="lamp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="table.h" />
+    <ClInclude Include="lamp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

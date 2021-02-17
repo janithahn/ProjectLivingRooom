@@ -24,9 +24,15 @@
     <ClCompile Include="table.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
+    <ClCompile Include="lamp.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="table.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="lamp.h">
       <Filter>Objects</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,4 +1,6 @@
-# include "table.h"
+#include <GL/glut.h>
+#include <GL/freeglut_ext.h>
+#include "table.h"
 
 void Table::drawTable() {
 
@@ -184,7 +186,6 @@ void Table::drawTable() {
 	glVertex3f(-3.4f, -0.2f, -1.2f);
 	glVertex3f(-3.4f, -3.0f, -1.2f);
 	glVertex3f(-3.4f, -3.0f, -1.6f);
-
 
 
 	glEnd();
