@@ -102,18 +102,19 @@ void DrawGrid() {
 }
 
 //texture image files
-const char* image_files[4] = {
+const char* image_files[5] = {
     "C:/work/CS308/Project/ProjectLivingRooom/Textures/bricks.jpg",
     "C:/work/CS308/Project/ProjectLivingRooom/Textures/ceiling.jpg",
     "C:/work/CS308/Project/ProjectLivingRooom/Textures/floor.jpg",
-    "C:/work/CS308/Project/ProjectLivingRooom/Textures/wall_blue.jpg"
+    "C:/work/CS308/Project/ProjectLivingRooom/Textures/wall_blue.jpg",
+    "C:/work/CS308/Project/ProjectLivingRooom/Textures/wall_grey.jpg"
 };
 
 //texture func 1
-GLuint texture[4];
+GLuint texture[5];
 
 void loadTexture() {
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 5; i++) {
         texture[i] = SOIL_load_OGL_texture(image_files[i], SOIL_LOAD_RGBA, SOIL_CREATE_NEW_ID, 0);
 
         glBindTexture(GL_TEXTURE_2D, texture[i]);
@@ -124,8 +125,7 @@ void loadTexture() {
 }
 
 //texture func 2
-GLuint tex;
-GLuint tex_array[4];
+/*GLuint tex_array[4];
 
 std::string get_current_dir() {
     char buff[FILENAME_MAX]; //create string buffer to hold path
@@ -167,43 +167,9 @@ void initTexture() {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
-    }
+    }  
 
-    /*int width, height;
-    unsigned char* image = SOIL_load_image("C:/work/CS308/Project/ProjectLivingRooom/Textures/bricks.jpg", &width, &height, 0, SOIL_LOAD_RGB);
-
-
-    if (!image) {
-        std::cout << "Failed to load texture: " << sizeof(image) << std::endl;
-    }
-    else {
-        std::cout << &image << std::endl;
-    }
-
-
-    unsigned char data[] =
-    {
-        128, 128, 128, 255,
-        255, 0, 0, 255,
-        0, 255, 0, 255,
-        0, 0, 255, 255
-    };
-
-    glGenTextures(1, &tex);
-    glBindTexture(GL_TEXTURE_2D, tex);
-
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);*/
-
-    // Use the following line in order to load the created texture map instead of the image
-    //glTexImage2D( GL_TEXTURE_2D, 0,GL_RGBA, 2, 2, 0, GL_RGBA, GL_UNSIGNED_BYTE, data );    
-
-}
+}*/
 
 void drawWalls() {
     //glTranslatef(0.0, 1.6, 0.0);
@@ -302,7 +268,7 @@ void drawWalls() {
 
     //BOTTOM
     //texture
-    glBindTexture(GL_TEXTURE_2D, texture[2]);
+    glBindTexture(GL_TEXTURE_2D, texture[4]);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
