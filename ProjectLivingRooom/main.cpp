@@ -41,8 +41,9 @@ GLfloat   ambientLight[] = { 0.4, 0.4, 0.4, 1.0 };
 //light 1
 GLfloat L1_Ambient[] = { 0.5, 0.5, 0.5, 1.0 };
 GLfloat L1_Diffuse[] = { 1, 1, 1, 5.0 };
-GLfloat L1_Specular[] = { 1.0, 1.0, 0.0, 1.0 };   //Declaration of the specular component of the light_1
-GLfloat L1_postion[] = { 0, -3, -4, 1.0 };
+GLfloat L1_Specular[] = { 1.0, 1.0, 0.0, 10.0 };   //Declaration of the specular component of the light_1
+GLfloat L1_postion[] = { 0, -3, 0, 100.0 };
+GLfloat L1_direction[] = { 0, -1, 0, 0 };
 
 GLfloat globalAmbient[] = { 0.8, 0.8, 0.8, 1.0 };
 
@@ -59,6 +60,9 @@ void initLight() {
     glLightfv(GL_LIGHT1, GL_DIFFUSE, L1_Diffuse);
     glLightfv(GL_LIGHT1, GL_SPECULAR, L1_Specular);
     glLightfv(GL_LIGHT1, GL_POSITION, L1_postion);
+    //glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 90);
+    glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 128);
+    //glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, L1_direction);
 
     //Declaration of the ligt reflecting properties for the materials
     GLfloat specularReflectance[] = { 1.0, 1.0, 1.0, 1.0 };
