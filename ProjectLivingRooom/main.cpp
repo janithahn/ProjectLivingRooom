@@ -108,20 +108,21 @@ void DrawGrid() {
 }
 
 //texture image files
-const char* image_files[6] = {
+const char* image_files[7] = {
     "C:/work/CS308/Project/ProjectLivingRooom/Textures/bricks.jpg",
     "C:/work/CS308/Project/ProjectLivingRooom/Textures/ceiling.jpg",
     "C:/work/CS308/Project/ProjectLivingRooom/Textures/floor.jpg",
-    "C:/work/CS308/Project/ProjectLivingRooom/Textures/wall_blue.jpg",
+    "C:/work/CS308/Project/ProjectLivingRooom/Textures/wall_white.jpg",
     "C:/work/CS308/Project/ProjectLivingRooom/Textures/wall_grey.jpg",
-    "C:/work/CS308/Project/ProjectLivingRooom/Textures/wall_butter.jpg"
+    "C:/work/CS308/Project/ProjectLivingRooom/Textures/wall_white_brick.png",
+    "C:/work/CS308/Project/ProjectLivingRooom/Textures/wall_matt_butter.jpg"
 };
 
 //texture func 1
-GLuint texture[6];
+GLuint texture[7];
 
 void loadTexture() {
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 7; i++) {
         texture[i] = SOIL_load_OGL_texture(image_files[i], SOIL_LOAD_RGBA, SOIL_CREATE_NEW_ID, 0);
 
         glBindTexture(GL_TEXTURE_2D, texture[i]);
@@ -312,6 +313,26 @@ void drawTableLamp() {
     glPopMatrix();
 }
 
+void drawWallLamp1() {
+    Lamp wallLamp;
+    glPushMatrix();
+    glTranslatef(15, 6, -19);
+    glScalef(1.7f, 1.7f, 1.7f);
+    //glRotatef(-30.0, 0.0, 1.0, 0.0);
+    wallLamp.drawWallLamp();
+    glPopMatrix();
+}
+
+void drawWallLamp2() {
+    Lamp wallLamp;
+    glPushMatrix();
+    glTranslatef(-15, 6, -19);
+    glScalef(1.7f, 1.7f, 1.7f);
+    //glRotatef(-30.0, 0.0, 1.0, 0.0);
+    wallLamp.drawWallLamp();
+    glPopMatrix();
+}
+
 void init() {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glEnable(GL_DEPTH_TEST);
@@ -370,6 +391,9 @@ void display() {
     //glDisable(GL_TEXTURE_2D);
     drawTable();
     drawTableLamp();
+
+    drawWallLamp1();
+    drawWallLamp2();
 
     glPopMatrix();
 

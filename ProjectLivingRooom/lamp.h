@@ -4,9 +4,9 @@
 
 class Lamp {
 
-public:
-	void drawTableLamp();
-	void drawWallLamp();
+	public:
+		void drawTableLamp();
+		void drawWallLamp();
 };
 
-#endif 
+#endif
