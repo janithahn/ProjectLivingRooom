@@ -6,7 +6,7 @@ class Lamp {
 
 	public:
 		void drawTableLamp();
-		void drawWallLamp();
+		void drawWallLamp(GLuint texture);
 };
 
 #endif

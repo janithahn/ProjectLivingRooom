@@ -42,8 +42,15 @@ GLfloat   ambientLight[] = { 0.4, 0.4, 0.4, 1.0 };
 GLfloat L1_Ambient[] = { 0.5, 0.5, 0.5, 1.0 };
 GLfloat L1_Diffuse[] = { 1, 1, 1, 5.0 };
 GLfloat L1_Specular[] = { 1.0, 1.0, 0.0, 10.0 };   //Declaration of the specular component of the light_1
-GLfloat L1_postion[] = { 0, -3, 0, 100.0 };
+GLfloat L1_postion[] = { 0, -3, 0, 1.0 };
 GLfloat L1_direction[] = { 0, -1, 0, 0 };
+
+//light 2 (wall lamp1)
+GLfloat L2_Ambient[] = { 0.2, 0.2, 0.2, 1.0 };
+GLfloat L2_Diffuse[] = { 0.6, 0.6, 0.6, 1.0 };
+GLfloat L2_Specular[] = { 0.3, 0.3, 0.3, 1.0 };   //Declaration of the specular component of the light_2
+GLfloat L2_postion[] = { 10, 25, -20, 1.0 };
+GLfloat L2_direction[] = { 0, 0, 0 };
 
 GLfloat globalAmbient[] = { 0.8, 0.8, 0.8, 1.0 };
 
@@ -62,7 +69,18 @@ void initLight() {
     glLightfv(GL_LIGHT1, GL_POSITION, L1_postion);
     //glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 90);
     glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 128);
+    glLightf(GL_LIGHT2, GL_SHININESS, 128);
     //glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, L1_direction);
+
+    glLightfv(GL_LIGHT2, GL_DIFFUSE, L2_Diffuse);
+    glLightfv(GL_LIGHT2, GL_SPECULAR, L2_Specular);
+    glLightfv(GL_LIGHT2, GL_POSITION, L2_postion);
+    glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, L2_direction);
+    glLightf(GL_LIGHT2, GL_SPOT_CUTOFF, 45.0);
+    glLightf(GL_LIGHT2, GL_SPOT_EXPONENT, 2);
+    //glLightf(GL_LIGHT2, GL_CONSTANT_ATTENUATION, 1.5);
+    //glLightf(GL_LIGHT2, GL_LINEAR_ATTENUATION, 0.5);
+    //glLightf(GL_LIGHT2, GL_QUADRATIC_ATTENUATION, 0.1);
 
     //Declaration of the ligt reflecting properties for the materials
     GLfloat specularReflectance[] = { 1.0, 1.0, 1.0, 1.0 };
@@ -108,22 +126,24 @@ void DrawGrid() {
 }
 
 //texture image files
-const char* image_files[7] = {
+const char* image_files[8] = {
     "C:/work/CS308/Project/ProjectLivingRooom/Textures/bricks.jpg",
     "C:/work/CS308/Project/ProjectLivingRooom/Textures/ceiling.jpg",
     "C:/work/CS308/Project/ProjectLivingRooom/Textures/floor.jpg",
     "C:/work/CS308/Project/ProjectLivingRooom/Textures/wall_white.jpg",
     "C:/work/CS308/Project/ProjectLivingRooom/Textures/wall_grey.jpg",
     "C:/work/CS308/Project/ProjectLivingRooom/Textures/wall_white_brick.png",
-    "C:/work/CS308/Project/ProjectLivingRooom/Textures/wall_matt_butter.jpg"
+    "C:/work/CS308/Project/ProjectLivingRooom/Textures/wall_matt_butter.jpg",
+    "C:/work/CS308/Project/ProjectLivingRooom/Textures/wall_lamp.jpg"
 };
 
 //texture func 1
-GLuint texture[7];
+GLuint texture[8];
 
 void loadTexture() {
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < 8; i++) {
         texture[i] = SOIL_load_OGL_texture(image_files[i], SOIL_LOAD_RGBA, SOIL_CREATE_NEW_ID, 0);
+        //SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
 
         glBindTexture(GL_TEXTURE_2D, texture[i]);
 
@@ -133,18 +153,16 @@ void loadTexture() {
 }
 
 //texture func 2
-/*GLuint tex_array[4];
-
-std::string get_current_dir() {
+/*std::string get_current_dir() {
     char buff[FILENAME_MAX]; //create string buffer to hold path
     GetCurrentDir(buff, FILENAME_MAX);
     string current_working_dir(buff);
     return current_working_dir;
 }
 
-void initTexture() {
+void loadTexture() {
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 7; i++) {
 
         int width, height;
         
@@ -165,8 +183,8 @@ void initTexture() {
             0, 0, 255, 255
         };
 
-        glGenTextures(1, &tex_array[i]);
-        glBindTexture(GL_TEXTURE_2D, tex_array[i]);
+        glGenTextures(1, &texture[i]);
+        glBindTexture(GL_TEXTURE_2D, texture[i]);
 
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -319,7 +337,7 @@ void drawWallLamp1() {
     glTranslatef(15, 6, -19);
     glScalef(1.7f, 1.7f, 1.7f);
     //glRotatef(-30.0, 0.0, 1.0, 0.0);
-    wallLamp.drawWallLamp();
+    wallLamp.drawWallLamp(texture[7]);
     glPopMatrix();
 }
 
@@ -329,7 +347,7 @@ void drawWallLamp2() {
     glTranslatef(-15, 6, -19);
     glScalef(1.7f, 1.7f, 1.7f);
     //glRotatef(-30.0, 0.0, 1.0, 0.0);
-    wallLamp.drawWallLamp();
+    wallLamp.drawWallLamp(texture[7]);
     glPopMatrix();
 }
 
@@ -346,6 +364,7 @@ void init() {
     (GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
 
     // Enabling the color tracking of each faces of the materials. this enables the color visibility of the materials
+    glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
     glEnable(GL_COLOR_MATERIAL);
 
     glEnable(GL_NORMALIZE);
@@ -354,7 +373,6 @@ void init() {
 
     //texture
     glEnable(GL_TEXTURE_2D);
-    //initTexture();
     loadTexture();
 
 }
@@ -445,6 +463,11 @@ void keyboard(unsigned char key, int x, int y) {
         glDisable(GL_LIGHT1);
     if (key == '1')
         glEnable(GL_LIGHT1);
+
+    if (key == '@')
+        glDisable(GL_LIGHT2);
+    if (key == '2')
+        glEnable(GL_LIGHT2);
 
     glutPostRedisplay();
 

@@ -15,12 +15,16 @@ void Lamp::drawTableLamp() {
 
 }
 
-void Lamp::drawWallLamp() {
+void Lamp::drawWallLamp(GLuint texture) {
+
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_LINEAR);
 
     // lighting plate
     glBegin(GL_QUADS);                // Begin drawing the color cube with 6 quads
 
-    glColor3f(1.0f, 1.0f, 0.0f);     // Yellow
+    //glColor3f(1.0f, 1.0f, 0.0f);     // Yellow
 
     // Top face (y = 1.0f)
     // Define vertices in counter-clockwise (CCW) order with normal pointing out
@@ -32,40 +36,60 @@ void Lamp::drawWallLamp() {
 
     // Bottom face (y = -1.0f)
     glVertex3f(1.0f, -1.0f, 0.05f);
+        glTexCoord3f(1.0f, -1.0f, 0.05f);
     glVertex3f(-1.0f, -1.0f, 0.05f);
+        glTexCoord3f(-1.0f, -1.0f, 0.05f);
     glVertex3f(-1.0f, -1.0f, -0.05f);
+        glTexCoord3f(-1.0f, -1.0f, -0.05f);
     glVertex3f(1.0f, -1.0f, -0.05f);
+        glVertex3f(1.0f, -1.0f, -0.05f);
 
     // Front face  (z = 1.0f)
     glVertex3f(1.0f, 1.0f, 0.05f);
+        glTexCoord3f(1.0f, 1.0f, 0.05f);
     glVertex3f(-1.0f, 1.0f, 0.05f);
+        glTexCoord3f(-1.0f, 1.0f, 0.05f);
     glVertex3f(-1.0f, -1.0f, 0.05f);
+        glTexCoord3f(-1.0f, -1.0f, 0.05f);
     glVertex3f(1.0f, -1.0f, 0.05f);
+        glTexCoord3f(1.0f, -1.0f, 0.05f);
 
     // Back face (z = -1.0f)
     glVertex3f(1.0f, -1.0f, -0.05f);
+        glTexCoord3f(1.0f, -1.0f, -0.05f);
     glVertex3f(-1.0f, -1.0f, -0.05f);
+        glTexCoord3f(-1.0f, -1.0f, -0.05f);
     glVertex3f(-1.0f, 1.0f, -0.05f);
+        glTexCoord3f(-1.0f, 1.0f, -0.05f);
     glVertex3f(1.0f, 1.0f, -0.05f);
+        glTexCoord3f(1.0f, 1.0f, -0.05f);
 
     // Left face (x = -1.0f)
     glVertex3f(-1.0f, 1.0f, 0.05f);
+        glTexCoord3f(-1.0f, 1.0f, 0.05f);
     glVertex3f(-1.0f, 1.0f, -0.05f);
+        glTexCoord3f(-1.0f, 1.0f, -0.05f);
     glVertex3f(-1.0f, -1.0f, -0.05f);
+        glTexCoord3f(-1.0f, -1.0f, -0.05f);
     glVertex3f(-1.0f, -1.0f, 0.05f);
+        glTexCoord3f(-1.0f, -1.0f, 0.05f);
 
     // Right face (x = 1.0f)
     glVertex3f(1.0f, 1.0f, -0.05f);
+        glTexCoord3f(1.0f, 1.0f, -0.05f);
     glVertex3f(1.0f, 1.0f, 0.05f);
+        glTexCoord3f(1.0f, 1.0f, 0.05f);
     glVertex3f(1.0f, -1.0f, 0.05f);
+        glTexCoord3f(1.0f, -1.0f, 0.05f);
     glVertex3f(1.0f, -1.0f, -0.05f);
+        glTexCoord3f(1.0f, -1.0f, -0.05f);
 
     glEnd();  // End of drawing color-cube
 
     // plate holder
     glBegin(GL_QUADS);                // Begin drawing the color cube with 6 quads
 
-    glColor3f(1.0f, 1.0f, 0.0f);     // Yellow
+    //glColor3f(1.0f, 1.0f, 0.0f);     // Yellow
 
     // Top face (y = 1.0f)
     // Define vertices in counter-clockwise (CCW) order with normal pointing out
