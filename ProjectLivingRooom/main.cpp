@@ -76,7 +76,7 @@ void initLight() {
     glLightfv(GL_LIGHT2, GL_SPECULAR, L2_Specular);
     glLightfv(GL_LIGHT2, GL_POSITION, L2_postion);
     glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, L2_direction);
-    glLightf(GL_LIGHT2, GL_SPOT_CUTOFF, 45.0);
+    //glLightf(GL_LIGHT2, GL_SPOT_CUTOFF, 45.0);
     glLightf(GL_LIGHT2, GL_SPOT_EXPONENT, 2);
     //glLightf(GL_LIGHT2, GL_CONSTANT_ATTENUATION, 1.5);
     //glLightf(GL_LIGHT2, GL_LINEAR_ATTENUATION, 0.5);
