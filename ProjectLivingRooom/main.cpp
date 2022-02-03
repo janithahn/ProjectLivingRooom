@@ -8,6 +8,9 @@
 #include <direct.h>
 #include "table.h"
 #include "lamp.h"
+#include <dirent.h>
+#include <list>
+
 #define GetCurrentDir _getcwd
 
 using namespace std;
@@ -125,77 +128,94 @@ void DrawGrid() {
     glEnd();
 }
 
-//texture image files
-const char* image_files[8] = {
-    "C:/work/CS308/Project/ProjectLivingRooom/Textures/bricks.jpg",
-    "C:/work/CS308/Project/ProjectLivingRooom/Textures/ceiling.jpg",
-    "C:/work/CS308/Project/ProjectLivingRooom/Textures/floor.jpg",
-    "C:/work/CS308/Project/ProjectLivingRooom/Textures/wall_white.jpg",
-    "C:/work/CS308/Project/ProjectLivingRooom/Textures/wall_grey.jpg",
-    "C:/work/CS308/Project/ProjectLivingRooom/Textures/wall_white_brick.png",
-    "C:/work/CS308/Project/ProjectLivingRooom/Textures/wall_matt_butter.jpg",
-    "C:/work/CS308/Project/ProjectLivingRooom/Textures/wall_lamp.jpg"
-};
-
-//texture func 1
-GLuint texture[8];
-
-void loadTexture() {
-    for (int i = 0; i < 8; i++) {
-        texture[i] = SOIL_load_OGL_texture(image_files[i], SOIL_LOAD_RGBA, SOIL_CREATE_NEW_ID, 0);
-        //SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
-
-        glBindTexture(GL_TEXTURE_2D, texture[i]);
-
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    }
-}
-
-//texture func 2
-/*std::string get_current_dir() {
-    char buff[FILENAME_MAX]; //create string buffer to hold path
+std::string get_current_dir() {
+    char buff[FILENAME_MAX];
     GetCurrentDir(buff, FILENAME_MAX);
     string current_working_dir(buff);
     return current_working_dir;
 }
 
+std::string ReplaceAll(std::string str, const std::string& from, const std::string& to) {
+    size_t start_pos = 0;
+    while ((start_pos = str.find(from, start_pos)) != std::string::npos) {
+        str.replace(start_pos, from.length(), to);
+        start_pos += to.length(); // Handles case where 'to' is a substring of 'from'
+    }
+    return str;
+}
+
+std::string get_texture_location() {
+    std::string working_dir = get_current_dir();
+    working_dir = ReplaceAll(working_dir, "\\", "/");
+    return working_dir + "/Textures/";
+}
+
+list<string> listFiles(char* dir) {
+    list<string> file_list;
+    DIR* dr;
+    struct dirent* en;
+    dr = opendir(dir); //open all or present directory
+    int i = 0;
+    if (dr) {
+        while ((en = readdir(dr)) != NULL) {
+            string filename = en->d_name;
+            if (filename.find(".jpg") != std::string::npos || filename.find(".jpeg") != std::string::npos || filename.find(".png") != std::string::npos) {
+                file_list.push_back(en->d_name);
+            }
+        }
+        closedir(dr);
+    }
+    return file_list;
+}
+
+//texture image files
+/*const string image_files[] = {
+    "bricks.jpg",
+    "ceiling.jpg",
+    "floor.jpg",
+    "wall_white.jpg",
+    "wall_grey.jpg",
+    "wall_white_brick.png",
+    "wall_matt_butter.jpg",
+    "wall_lamp.jpg"
+};*/
+
+//textures
+GLuint texture[9];
+
 void loadTexture() {
+    std::string texture_location = get_texture_location();
 
-    for (int i = 0; i < 7; i++) {
+    list<string> texture_list_from_location = listFiles(&texture_location[0]);
+    list<string>::iterator it;
+    
+    int i;
+    for (it = texture_list_from_location.begin(), i=0; it != texture_list_from_location.end(); ++it, ++i) {
+        std::string location = texture_location + *it;
 
-        int width, height;
-        
-        unsigned char* image = SOIL_load_image(image_files[i], &width, &height, 0, SOIL_LOAD_RGB);
+        texture[i] = SOIL_load_OGL_texture(&location[0], SOIL_LOAD_RGBA, SOIL_CREATE_NEW_ID, 0);
+        //SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
 
-        if (!image) {
-            std::cout << "Failed to load texture: " << sizeof(image) << std::endl;
+        if (texture[i] == 0) {
+            std::cout << "Failed to load texture: " << sizeof(texture) << std::endl;
         }
         else {
-            std::cout << i << " " << &image << std::endl;
+            std::cout << "Texture " << i << ": \'" << &texture[i] << "\' loaded > " << *it << std::endl;
         }
 
-        unsigned char data[] =
-        {
-            128, 128, 128, 255,
-            255, 0, 0, 255,
-            0, 255, 0, 255,
-            0, 0, 255, 255
-        };
-
-        glGenTextures(1, &texture[i]);
+        //glGenTextures(1, &texture[i]);
         glBindTexture(GL_TEXTURE_2D, texture[i]);
-
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
-    }  
+        //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+        //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
-}*/
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    }
+}
 
 void drawWalls() {
     //glTranslatef(0.0, 1.6, 0.0);
@@ -204,9 +224,9 @@ void drawWalls() {
 
     // BACK
     //texture
-    glBindTexture(GL_TEXTURE_2D, texture[5]);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
+    //glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    //glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
     glBegin(GL_QUADS);
     glTexCoord3f(x, y, z);
@@ -222,7 +242,7 @@ void drawWalls() {
 
     // FRONT
     //texture
-    glBindTexture(GL_TEXTURE_2D, texture[3]);
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
@@ -240,9 +260,9 @@ void drawWalls() {
 
     // LEFT
     //texture
-    //glBindTexture(GL_TEXTURE_2D, tex_array[3]);
-    //glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    //glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
     glBegin(GL_QUADS);
     glTexCoord3f(-x, -y, -z);
@@ -258,9 +278,9 @@ void drawWalls() {
 
     // RIGHT
     //texture
-    //glBindTexture(GL_TEXTURE_2D, tex_array[3]);
-    //glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    //glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
     glBegin(GL_QUADS);
     glTexCoord3f(x, y, z);
@@ -395,7 +415,7 @@ void display() {
     glRotatef(rotZ, 0.0f, 0.0f, 1.0f);
 
 
-    glColor3f(1.0, 1.0, 1.0);
+    //glColor3f(1.0, 1.0, 1.0);
 
     DrawGrid();
 
@@ -404,7 +424,7 @@ void display() {
     glTranslatef(0.0, 10.0, 0.0);
 
     //glEnable(GL_TEXTURE_2D);
-    //glBindTexture(GL_TEXTURE_2D, tex_array[1]);
+    //glBindTexture(GL_TEXTURE_2D, texture[0]);
     drawWalls();
     //glDisable(GL_TEXTURE_2D);
     drawTable();
@@ -433,7 +453,7 @@ void keyboardSpecial(int key, int x, int y) {
         rotY -= 5.0;
 
     if (key == GLUT_KEY_RIGHT)
-        rotY += 1.0;
+        rotY += 5.0;
 
     glutPostRedisplay();
 }
