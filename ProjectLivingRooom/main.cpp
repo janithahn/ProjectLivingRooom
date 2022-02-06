@@ -672,7 +672,7 @@ void drawTvTable() {
 
 void drawConsoleOnTheTable() {
     //thick, height, length
-    PhotoFrame photoFrame;
+    Table table;
     glPushMatrix();
     glTranslatef(5, -7, 2.2);
 
@@ -681,7 +681,42 @@ void drawConsoleOnTheTable() {
             glRotatef(90, 0, 0, 1);
             glPushMatrix();
                 glScalef(2.8, 0.7, 1*0.7);
-                photoFrame.drawPhotoFrame(texture[20]);
+                table.drawConsoleOnTheTable(texture[21], texture[22]);
+        glPopMatrix();
+        glPopMatrix();
+    glPopMatrix();
+    glPopMatrix();
+}
+
+void drawRemoteOnTheTable() {
+    Table table;
+    glPushMatrix();
+    glTranslatef(0, -7, 2.2);
+
+    glPushMatrix();
+        glPushMatrix();
+            glRotatef(90, 0, 0, 1);
+            glPushMatrix();
+                glScalef(2.4, 0.15, 0.3);
+                table.drawConsoleOnTheTable(texture[21], texture[22]);
+        glPopMatrix();
+        glPopMatrix();
+    glPopMatrix();
+    glPopMatrix();
+}
+
+void drawMagazineOnTheTable() {
+    //thick, height, length
+    Table table;
+    glPushMatrix();
+    glTranslatef(-5, -7, 2.2);
+
+    glPushMatrix();
+        glPushMatrix();
+            glRotatef(90, 0, 0, 1);
+            glPushMatrix();
+                glScalef(0.8, 0.5, 1*0.5);
+                table.drawConsoleOnTheTable(texture[23], texture[22]);
         glPopMatrix();
         glPopMatrix();
     glPopMatrix();
@@ -743,7 +778,7 @@ void display() {
     drawWalls();
 
     //drawTable();
-    //drawTableLamp();
+    drawTableLamp();
 
     drawWallLamp1();
     drawWallLamp2();
@@ -755,6 +790,8 @@ void display() {
     drawTv();
     drawTvTable();
     drawConsoleOnTheTable();
+    drawRemoteOnTheTable();
+    drawMagazineOnTheTable();
 
     glPopMatrix();
 

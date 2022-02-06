@@ -7,6 +7,7 @@ class Table {
 public:
 	void drawTable();
 	void drawTvTable(GLuint texture);
+	void drawConsoleOnTheTable(GLuint texture1, GLuint texture2);
 };
 
 

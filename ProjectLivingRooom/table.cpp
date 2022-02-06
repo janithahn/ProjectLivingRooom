@@ -237,3 +237,82 @@ void Table::drawTvTable(GLuint texture) {
 	glPopMatrix();
 	glPopMatrix();
 }
+
+void Table::drawConsoleOnTheTable(GLuint texture1, GLuint texture2) {
+	glRotatef(90, 0, 0, 1);
+	glPushMatrix();
+
+	//glBindTexture(GL_TEXTURE_2D, imgTexture);
+	glBindTexture(GL_TEXTURE_2D, texture1);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+
+	glBegin(GL_QUADS);
+
+	//Front
+	//texture
+	glTexCoord2f(0, 0);
+	glVertex3f(-4.0f, -0.2f, 2.0f);
+	glTexCoord2f(0, 1);
+	glVertex3f(2.0f, -0.2f, 2.0f);
+	glTexCoord2f(1, 1);
+	glVertex3f(2.0f, 0.2f, 2.0f);
+	glTexCoord2f(1, 0);
+	glVertex3f(-4.0f, 0.2f, 2.0f);
+
+	//Back
+	//;
+	glVertex3f(-4.0f, -0.2f, -2.0f);
+	glVertex3f(-4.0f, 0.2f, -2.0f);
+	glVertex3f(2.0f, 0.2f, -2.0f);
+	glVertex3f(2.0f, -0.2f, -2.0f);
+
+	//Right
+	//
+	glVertex3f(2.0f, -0.2f, -2.0f);
+	glVertex3f(2.0f, 0.2f, -2.0f);
+	glVertex3f(2.0f, 0.2f, 2.0f);
+	glVertex3f(2.0f, -0.2f, 2.0f);
+
+
+	//Left
+	;
+	glVertex3f(-4.0f, -0.2f, -2.0f);
+	glVertex3f(-4.0f, -0.2f, 2.0f);
+	glVertex3f(-4.0f, 0.2f, 2.0f);
+	glVertex3f(-4.0f, 0.2f, -2.0f);
+
+	glEnd();
+
+	glBegin(GL_QUADS);
+
+	//glBindTexture(GL_TEXTURE_2D, texture2);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+
+	//top
+	//
+	glTexCoord2f(0, 0);
+	glVertex3f(2.0f, 0.2f, 2.0f);
+	glTexCoord2f(0, 1);
+	glVertex3f(-4.0f, 0.2f, 2.0f);
+	glTexCoord2f(1, 1);
+	glVertex3f(-4.0f, 0.2f, -2.0f);
+	glTexCoord2f(1, 0);
+	glVertex3f(2.0f, 0.2f, -2.0f);
+
+	//bottom
+	;
+	glTexCoord2f(0, 0);
+	glVertex3f(2.0f, -0.2f, 2.0f);
+	glTexCoord2f(0, 1);
+	glVertex3f(-4.0f, -0.2f, 2.0f);
+	glTexCoord2f(1, 1);
+	glVertex3f(-4.0f, -0.2f, -2.0f);
+	glTexCoord2f(1, 0);
+	glVertex3f(2.0f, -0.2f, -2.0f);
+
+	glEnd();
+
+	glPopMatrix();
+}
