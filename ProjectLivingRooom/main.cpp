@@ -313,11 +313,11 @@ void drawWalls() {
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0);
         glVertex3f(x, -y, z);
-    glTexCoord2f(0, 1.5);
+    glTexCoord2f(0, 1.8);
         glVertex3f(x, -y, -z);
-    glTexCoord2f(1.5, 1.5);
+    glTexCoord2f(1.8, 1.8);
         glVertex3f(-x, -y, -z);
-    glTexCoord2f(1.5, 0);
+    glTexCoord2f(1.8, 0);
         glVertex3f(-x, -y, z);
     glEnd();
     // END BOTTOM
