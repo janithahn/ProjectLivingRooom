@@ -29,11 +29,11 @@ GLfloat moveZ = 0.0f;
 
 // variables to rotate outermost Object Frame (to move all the rendered environment)
 GLfloat rotX = 0.0f;
-GLfloat rotY = 0.0f;
+GLfloat rotY = -10.0f;
 GLfloat rotZ = 0.0f;
 
 //variables to move the camera
-GLfloat camY = 0.0f;
+GLfloat camY = -3.0f;
 GLfloat camX = 0.0f;
 GLfloat camZ = 0.0f;
 
@@ -171,18 +171,6 @@ list<string> listFiles(char* dir) {
     }
     return file_list;
 }
-
-//texture image files
-/*const string image_files[] = {
-    "bricks.jpg",
-    "ceiling.jpg",
-    "floor.jpg",
-    "wall_white.jpg",
-    "wall_grey.jpg",
-    "wall_white_brick.png",
-    "wall_matt_butter.jpg",
-    "wall_lamp.jpg"
-};*/
 
 //textures
 GLuint texture[20];
@@ -763,6 +751,8 @@ void keyboard(unsigned char key, int x, int y) {
 void Timer(int x) {
     //animateRotation += animateRotation >= 360.0 ? -animateRotation : 5;
     glutPostRedisplay();
+
+    //printf("%f, %f, %f\n", camX, camY, camZ);
 
     glutTimerFunc(60, Timer, 1);
 }
