@@ -90,13 +90,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\vendor\freeglut\include;$(SolutionDir)\vendor\SOIL2\include;$(SolutionDir)\vendor\dirent\include;$(SolutionDir)\vendor\GL_files\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\vendor\glew\include;$(SolutionDir)\vendor\freeglut\include;$(SolutionDir)\vendor\SOIL2\include;$(SolutionDir)\vendor\dirent\include;$(SolutionDir)\vendor\GL_files\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\vendor\freeglut\lib;$(SolutionDir)\vendor\SOIL2\lib;$(SolutionDir)\vendor\GL_files\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glu32.lib;glut32.lib;soil2-debug.lib;soil2.lib;freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\vendor\glew\lib\Release\Win32;$(SolutionDir)\vendor\freeglut\lib;$(SolutionDir)\vendor\SOIL2\lib;$(SolutionDir)\vendor\GL_files\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glu32.lib;glut32.lib;soil2-debug.lib;soil2.lib;freeglut.lib;glew32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -146,10 +146,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="photo_frame.cpp" />
     <ClCompile Include="table.cpp" />
     <ClCompile Include="lamp.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="photo_frame.h" />
     <ClInclude Include="table.h" />
     <ClInclude Include="lamp.h" />
   </ItemGroup>

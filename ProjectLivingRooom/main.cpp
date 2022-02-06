@@ -1,15 +1,17 @@
 #include <iostream>
-//#include <GL/glut.h>
+#include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <math.h>
 #include <SOIL2.h>
 #include <string>
 #include <filesystem>
 #include <direct.h>
-#include "table.h"
-#include "lamp.h"
 #include <dirent.h>
 #include <list>
+
+#include "table.h"
+#include "lamp.h"
+#include "photo_frame.h"
 
 #define GetCurrentDir _getcwd
 
@@ -150,6 +152,8 @@ std::string get_texture_location() {
     return working_dir + "/Textures/";
 }
 
+//get a list of all the files(images) inside the 'Textures' dir
+//with this, all the texture images can be loaded without having to put image names inside an array or something
 list<string> listFiles(char* dir) {
     list<string> file_list;
     DIR* dr;
@@ -181,19 +185,19 @@ list<string> listFiles(char* dir) {
 };*/
 
 //textures
-GLuint texture[9];
+GLuint texture[20];
 
 void loadTexture() {
-    std::string texture_location = get_texture_location();
+    std::string texture_location = get_texture_location(); //'Texture' dir
 
-    list<string> texture_list_from_location = listFiles(&texture_location[0]);
-    list<string>::iterator it;
-    
+    list<string> texture_list_from_location = listFiles(&texture_location[0]); //loading the list of texture images, inside the 'Texture' dir
+
+    list<string>::iterator it; 
     int i;
     for (it = texture_list_from_location.begin(), i=0; it != texture_list_from_location.end(); ++it, ++i) {
-        std::string location = texture_location + *it;
+        std::string location = texture_location + *it; //creating the path for each texture
 
-        texture[i] = SOIL_load_OGL_texture(&location[0], SOIL_LOAD_RGBA, SOIL_CREATE_NEW_ID, 0);
+        texture[i] = SOIL_load_OGL_texture(&location[0], SOIL_LOAD_RGBA, SOIL_CREATE_NEW_ID, 0); //putting all the textures inside an array for further usage
         //SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
 
         if (texture[i] == 0) {
@@ -209,11 +213,11 @@ void loadTexture() {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-        //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-        //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        //glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        //glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     }
 }
 
@@ -221,114 +225,104 @@ void drawWalls() {
     //glTranslatef(0.0, 1.6, 0.0);
 
     //texture param
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 
     // BACK
     //texture
-    glBindTexture(GL_TEXTURE_2D, texture[0]);
-    //glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    //glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
+    glBindTexture(GL_TEXTURE_2D, texture[6]);
     glBegin(GL_QUADS);
-    glTexCoord3f(x, y, z);
+    glTexCoord2f(0, 0);
         glVertex3f(x, y, z);
-    glTexCoord3f(x, -y, z);
+    glTexCoord2f(0, 1);
         glVertex3f(x, -y, z);
-    glTexCoord3f(-x, -y, z);
+    glTexCoord2f(1, 1);
         glVertex3f(-x, -y, z);
-    glTexCoord3f(-x, y, z);
+    glTexCoord2f(1, 0);
         glVertex3f(-x, y, z);
     glEnd();
     // END BACK
 
     // FRONT
     //texture
-    glBindTexture(GL_TEXTURE_2D, texture[0]);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
+    glBindTexture(GL_TEXTURE_2D, texture[1]);
     glBegin(GL_QUADS);
-    glTexCoord3f(x, y, -z);
+    glTexCoord2f(0, 0);
         glVertex3f(x, y, -z);
-    glTexCoord3f(-x, y, -z);
+    glTexCoord2f(1, 0);
         glVertex3f(-x, y, -z);
-    glTexCoord3f(-x, -y, -z);
+    glTexCoord2f(1, 1);
         glVertex3f(-x, -y, -z);
-    glTexCoord3f(x, -y, -z);
+    glTexCoord2f(0, 1);
         glVertex3f(x, -y, -z);
     glEnd();
     // END FRONT
 
     // LEFT
     //texture
-    glBindTexture(GL_TEXTURE_2D, texture[0]);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
+    glBindTexture(GL_TEXTURE_2D, texture[6]);
     glBegin(GL_QUADS);
-    glTexCoord3f(-x, -y, -z);
+    glTexCoord2f(0, 0);
         glVertex3f(-x, -y, -z);
-    glTexCoord3f(-x, y, -z);
+    glTexCoord2f(0, 1);
         glVertex3f(-x, y, -z);
-    glTexCoord3f(-x, y, z);
+    glTexCoord2f(1, 1);
         glVertex3f(-x, y, z);
-    glTexCoord3f(-x, -y, z);
+    glTexCoord2f(1, 0);
         glVertex3f(-x, -y, z);
     glEnd();
     // LEFT END
 
     // RIGHT
     //texture
-    glBindTexture(GL_TEXTURE_2D, texture[0]);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
+    glBindTexture(GL_TEXTURE_2D, texture[6]);
     glBegin(GL_QUADS);
-    glTexCoord3f(x, y, z);
+    glTexCoord2f(0, 0);
         glVertex3f(x, y, z);
-    glTexCoord3f(x, -y, z);
+    glTexCoord2f(0, 1);
         glVertex3f(x, -y, z);
-    glTexCoord3f(x, -y, -z);
+    glTexCoord2f(1, 1);
         glVertex3f(x, -y, -z);
-    glTexCoord3f(x, y, -z);
+    glTexCoord2f(1, 0);
         glVertex3f(x, y, -z);
     glEnd();
     // RIGHT END
 
     // TOP
     //texture
-    glBindTexture(GL_TEXTURE_2D, texture[1]);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
+    glBindTexture(GL_TEXTURE_2D, texture[2]);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
     glBegin(GL_QUADS);
-    glTexCoord3f(x, y, -z);
+    glTexCoord2f(0, 0);
         glVertex3f(x, y, -z);
-    glTexCoord3f(x, y, z);
+    glTexCoord2f(0, 1.5);
         glVertex3f(x, y, z);
-    glTexCoord3f(-x, y, z);
+    glTexCoord2f(1.5, 1.5);
         glVertex3f(-x, y, z);
-    glTexCoord3f(-x, y, -z);
+    glTexCoord2f(1.5, 0);
         glVertex3f(-x, y, -z);
     glEnd();
     // END TOP
 
     //BOTTOM
     //texture
-    glBindTexture(GL_TEXTURE_2D, texture[4]);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
+    glBindTexture(GL_TEXTURE_2D, texture[3]);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
     glBegin(GL_QUADS);
-    glTexCoord3f(x, -y, z);
+    glTexCoord2f(0, 0);
         glVertex3f(x, -y, z);
-    glTexCoord3f(x, -y, -z);
+    glTexCoord2f(0, 1.5);
         glVertex3f(x, -y, -z);
-    glTexCoord3f(-x, -y, -z);
+    glTexCoord2f(1.5, 1.5);
         glVertex3f(-x, -y, -z);
-    glTexCoord3f(-x, -y, z);
+    glTexCoord2f(1.5, 0);
         glVertex3f(-x, -y, z);
     glEnd();
     // END BOTTOM
+
+    
 }
 
 void drawTable() {
@@ -368,6 +362,279 @@ void drawWallLamp2() {
     glScalef(1.7f, 1.7f, 1.7f);
     //glRotatef(-30.0, 0.0, 1.0, 0.0);
     wallLamp.drawWallLamp(texture[7]);
+    glPopMatrix();
+}
+
+void drawPhotoFrameCluster() {
+    //thick, height, length
+    PhotoFrame photoFrame;
+    glTranslatef(-20, 0, 0);
+    glPushMatrix();
+
+    /*--------------------------------------------------------------*/
+    //portrait
+    glPushMatrix();
+    glTranslatef(0, 2.2, -2.2);
+    glRotatef(-2, 0, 0, 1);
+        glPushMatrix();
+            glScalef(1, 1, 1);
+            photoFrame.drawPhotoFrame(texture[4], texture[6]);
+        glPopMatrix();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0.197, 2.1, -2.2);
+    glRotatef(-2, 0, 0, 1);
+    glPushMatrix();
+    glScalef(0, 0.9, 0.85);
+    photoFrame.drawPhotoFrame(texture[6], texture[6]);
+    glPopMatrix();
+    glPopMatrix();
+    /*--------------------------------------------------------------*/
+
+    /*--------------------------------------------------------------*/
+    //landscape
+    glPushMatrix();
+    glTranslatef(0, -1.8, 4.2);
+    glRotatef(-2, 0, 0, 1);
+        glPushMatrix();
+            glRotatef(90, 1, 0, 0);
+            glPushMatrix();
+                glScalef(1, 1, 1);
+                photoFrame.drawPhotoFrame(texture[4], texture[6]);
+            glPopMatrix();
+        glPopMatrix();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0.2004, -1.8, 4.2);
+    glRotatef(-2, 0, 0, 1);
+    glPushMatrix();
+    glRotatef(90, 1, 0, 0);
+    glPushMatrix();
+    glScalef(0, 0.9, 0.85);
+    photoFrame.drawPhotoFrame(texture[6], texture[6]);
+    glPopMatrix();
+    glPopMatrix();
+    glPopMatrix();
+    /*--------------------------------------------------------------*/
+
+    /*--------------------------------------------------------------*/
+    //landscape
+    glPushMatrix();
+        glTranslatef(0, -3.1, -1.2);
+        glRotatef(-2, 0, 0, 1);
+            glPushMatrix();
+            glRotatef(90, 1, 0, 0);
+            glPushMatrix();
+                glScalef(1, 0.5, 0.5);
+                photoFrame.drawPhotoFrame(texture[4], texture[6]);
+            glPopMatrix();
+        glPopMatrix();
+    glPopMatrix();
+
+    glPushMatrix();
+        glTranslatef(0.2004, -3.1, -1.255);
+        glRotatef(-2, 0, 0, 1);
+            glPushMatrix();
+            glRotatef(90, 1, 0, 0);
+            glPushMatrix();
+                glScalef(0, 0.44, 0.42);
+                photoFrame.drawPhotoFrame(texture[6], texture[6]);
+            glPopMatrix();
+        glPopMatrix();
+    glPopMatrix();
+    /*--------------------------------------------------------------*/
+
+    /*--------------------------------------------------------------*/
+    //landscape
+    glPushMatrix();
+        glTranslatef(0, -2.7, -4.2);
+        glRotatef(-2, 0, 0, 1);
+            glPushMatrix();
+            glRotatef(90, 1, 0, 0);
+            glPushMatrix();
+                glScalef(1, 0.3, 0.3);
+                photoFrame.drawPhotoFrame(texture[4], texture[6]);
+            glPopMatrix();
+        glPopMatrix();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0.2003, -2.7, -4.234);
+    glRotatef(-2, 0, 0, 1);
+    glPushMatrix();
+    glRotatef(90, 1, 0, 0);
+    glPushMatrix();
+    glScalef(0, 0.264, 0.254);
+    photoFrame.drawPhotoFrame(texture[6], texture[6]);
+    glPopMatrix();
+    glPopMatrix();
+    glPopMatrix();
+    /*--------------------------------------------------------------*/
+
+    /*--------------------------------------------------------------*/
+    //portrait
+    glPushMatrix();
+        glTranslatef(0, 0.8, -5.8);
+        glRotatef(-2, 0, 0, 1);
+        glPushMatrix();
+            glScalef(1, 0.6, 0.6);
+            photoFrame.drawPhotoFrame(texture[4], texture[6]);
+        glPopMatrix();
+    glPopMatrix();
+
+
+    glPushMatrix();
+    glTranslatef(0.199, 0.74, -5.8);
+    glRotatef(-2, 0, 0, 1);
+    glPushMatrix();
+    glScalef(0, 0.54, 0.54);
+    photoFrame.drawPhotoFrame(texture[6], texture[6]);
+    glPopMatrix();
+    glPopMatrix();
+    /*--------------------------------------------------------------*/
+
+    /*--------------------------------------------------------------*/
+    //portrait
+    glPushMatrix();
+        glTranslatef(0, 3.9, -5.4);
+        glRotatef(-2, 0, 0, 1);
+        glPushMatrix();
+            glScalef(1, 0.4, 0.4);
+            photoFrame.drawPhotoFrame(texture[4], texture[6]);
+        glPopMatrix();
+    glPopMatrix();
+
+    glPushMatrix();
+        glTranslatef(0.199, 3.83, -5.4);
+        glRotatef(-2, 0, 0, 1);
+        glPushMatrix();
+            glScalef(0, 0.35, 0.34);
+            photoFrame.drawPhotoFrame(texture[6], texture[6]);
+        glPopMatrix();
+    glPopMatrix();
+    /*--------------------------------------------------------------*/
+
+    /*--------------------------------------------------------------*/
+    //portrait
+    glPushMatrix();
+        glTranslatef(0, 3.4, 1.6);
+        glRotatef(-2, 0, 0, 1);
+        glPushMatrix();
+            glScalef(1, 0.7, 0.7);
+            photoFrame.drawPhotoFrame(texture[4], texture[6]);
+        glPopMatrix();
+    glPopMatrix();
+    
+    glPushMatrix();
+        glTranslatef(0.202, 3.4, 1.6);
+        glRotatef(-2, 0, 0, 1);
+        glPushMatrix();
+            glScalef(0, 0.64, 0.64);
+            photoFrame.drawPhotoFrame(texture[6], texture[6]);
+        glPopMatrix();
+    glPopMatrix();
+    /*--------------------------------------------------------------*/
+
+    /*--------------------------------------------------------------*/
+    //landscape
+    glPushMatrix();
+        glTranslatef(0, 2.0, 6.2);
+        glRotatef(-2, 0, 0, 1);
+            glPushMatrix();
+            glRotatef(90, 1, 0, 0);
+            glPushMatrix();
+                glScalef(1, 0.7, 0.7);
+                photoFrame.drawPhotoFrame(texture[4], texture[6]);
+            glPopMatrix();
+        glPopMatrix();
+    glPopMatrix();
+
+    
+    glPushMatrix();
+        glTranslatef(0.2003, 2.0, 6.2);
+        glRotatef(-2, 0, 0, 1);
+            glPushMatrix();
+            glRotatef(90, 1, 0, 0);
+            glPushMatrix();
+                glScalef(0, 0.64, 0.64);
+                photoFrame.drawPhotoFrame(texture[6], texture[6]);
+            glPopMatrix();
+        glPopMatrix();
+    glPopMatrix();
+    /*--------------------------------------------------------------*/
+
+    /*--------------------------------------------------------------*/
+    //portrait
+    glPushMatrix();
+        glTranslatef(0, -0.6, 7.4);
+        glRotatef(-2, 0, 0, 1);
+        glPushMatrix();
+            glScalef(1, 0.4, 0.4);
+            photoFrame.drawPhotoFrame(texture[4], texture[6]);
+        glPopMatrix();
+    glPopMatrix();
+
+    
+    glPushMatrix();
+        glTranslatef(0.202, -0.65, 7.4);
+        glRotatef(-2, 0, 0, 1);
+        glPushMatrix();
+            glScalef(0, 0.35, 0.34);
+            photoFrame.drawPhotoFrame(texture[6], texture[6]);
+        glPopMatrix();
+    glPopMatrix();
+    /*--------------------------------------------------------------*/
+
+    /*--------------------------------------------------------------*/
+    //portrait
+    glPushMatrix();
+        glTranslatef(0, -0.6, 9.5);
+        glRotatef(-2, 0, 0, 1);
+        glPushMatrix();
+            glScalef(1, 0.4, 0.4);
+            photoFrame.drawPhotoFrame(texture[4], texture[6]);
+        glPopMatrix();
+    glPopMatrix();
+    
+    glPushMatrix();
+        glTranslatef(0.202, -0.65, 9.5);
+        glRotatef(-2, 0, 0, 1);
+        glPushMatrix();
+            glScalef(0, 0.35, 0.34);
+            photoFrame.drawPhotoFrame(texture[6], texture[6]);
+        glPopMatrix();
+    glPopMatrix();
+    /*--------------------------------------------------------------*/
+
+    /*--------------------------------------------------------------*/
+    //landscape
+    glPushMatrix();
+        glTranslatef(0, -3.2, 7.8);
+        glRotatef(-2, 0, 0, 1);
+        glPushMatrix();
+            glRotatef(90, 1, 0, 0);
+            glPushMatrix();
+                glScalef(1, 0.3, 0.3);
+                photoFrame.drawPhotoFrame(texture[4], texture[6]);
+        glPopMatrix();
+        glPopMatrix();
+    glPopMatrix();
+    
+    glPushMatrix();
+        glTranslatef(0.205, -3.2, 7.747);
+        glRotatef(-2, 0, 0, 1);
+        glPushMatrix();
+            glRotatef(90, 1, 0, 0);
+            glPushMatrix();
+                glScalef(0, 0.265, 0.255);
+                photoFrame.drawPhotoFrame(texture[6], texture[6]);
+        glPopMatrix();
+        glPopMatrix();
+    glPopMatrix();
+    /*--------------------------------------------------------------*/
+
     glPopMatrix();
 }
 
@@ -413,9 +680,9 @@ void display() {
     glRotatef(rotX, 1.0f, 0.0f, 0.0f);
     glRotatef(rotY, 0.0f, 1.0f, 0.0f);
     glRotatef(rotZ, 0.0f, 0.0f, 1.0f);
+    
 
-
-    //glColor3f(1.0, 1.0, 1.0);
+    glColor3f(1.0, 1.0, 1.0);
 
     DrawGrid();
 
@@ -423,15 +690,15 @@ void display() {
     glPushMatrix();
     glTranslatef(0.0, 10.0, 0.0);
 
-    //glEnable(GL_TEXTURE_2D);
-    //glBindTexture(GL_TEXTURE_2D, texture[0]);
     drawWalls();
-    //glDisable(GL_TEXTURE_2D);
-    drawTable();
-    drawTableLamp();
+
+    //drawTable();
+    //drawTableLamp();
 
     drawWallLamp1();
     drawWallLamp2();
+
+    drawPhotoFrameCluster();
 
     glPopMatrix();
 
