@@ -6,6 +6,7 @@ class Table {
 
 public:
 	void drawTable();
+	void drawTvTable(GLuint texture);
 };
 
 

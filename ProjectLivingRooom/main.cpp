@@ -173,7 +173,7 @@ list<string> listFiles(char* dir) {
 }
 
 //textures
-GLuint texture[20];
+GLuint texture[30];
 
 void loadTexture() {
     std::string texture_location = get_texture_location(); //'Texture' dir
@@ -626,6 +626,68 @@ void drawPhotoFrameCluster() {
     glPopMatrix();
 }
 
+void drawPainting() {
+    //thick, height, length
+    PhotoFrame photoFrame;
+    glPushMatrix();
+    glTranslatef(38, -1, -5);
+
+    glPushMatrix();
+        glPushMatrix();
+            glRotatef(90, 1, 0, 0);
+            glPushMatrix();
+                glScalef(1, 2*0.7, 5*0.7);
+                photoFrame.drawPhotoFrame(texture[20]);
+        glPopMatrix();
+        glPopMatrix();
+    glPopMatrix();
+    glPopMatrix();
+}
+
+void drawTv() {
+    //thick, height, length
+    PhotoFrame photoFrame;
+    glTranslatef(20, 0, -19.5);
+
+    glPushMatrix();
+        glRotatef(3, 1, 0, 0);
+        glPushMatrix();
+            glRotatef(90, 0, 1, 0);
+            glPushMatrix();
+                glScalef(1, 2*0.7, 5*0.7);
+                photoFrame.drawPhotoFrame(texture[19]);
+        glPopMatrix();
+        glPopMatrix();
+    glPopMatrix();
+}
+
+void drawTvTable() {
+    Table table;
+
+    glPushMatrix();
+    glTranslatef(0, -8, 2);
+    table.drawTvTable(texture[5]);
+    glPopMatrix();
+}
+
+void drawConsoleOnTheTable() {
+    //thick, height, length
+    PhotoFrame photoFrame;
+    glPushMatrix();
+    glTranslatef(5, -7, 2.2);
+
+    glPushMatrix();
+        glPushMatrix();
+            glRotatef(90, 0, 0, 1);
+            glPushMatrix();
+                glScalef(2.8, 0.7, 1*0.7);
+                photoFrame.drawPhotoFrame(texture[20]);
+        glPopMatrix();
+        glPopMatrix();
+    glPopMatrix();
+    glPopMatrix();
+}
+
 void init() {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glEnable(GL_DEPTH_TEST);
@@ -687,6 +749,12 @@ void display() {
     drawWallLamp2();
 
     drawPhotoFrameCluster();
+
+    drawPainting();
+
+    drawTv();
+    drawTvTable();
+    drawConsoleOnTheTable();
 
     glPopMatrix();
 

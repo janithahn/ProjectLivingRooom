@@ -1,3 +1,4 @@
+#include <GL/glew.h>
 #include <GL/glut.h>
 #include <GL/freeglut_ext.h>
 #include "table.h"
@@ -189,4 +190,50 @@ void Table::drawTable() {
 
 
 	glEnd();
+}
+
+void Table::drawTvTable(GLuint texture) {
+
+	GLUquadricObj* quadratic;
+	quadratic = gluNewQuadric();
+
+	glPushMatrix();
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glScalef(1.7, 0.2, 0.4);
+	glutSolidCube(10);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(5, -1, -1);
+	glPushMatrix();
+	glRotatef(90, 1, 0, 0);
+	gluCylinder(quadratic, 0.8, 0.8, 2, 50, 50);
+	glPopMatrix();
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(5, -1, 1);
+	glPushMatrix();
+	glRotatef(90, 1, 0, 0);
+	gluCylinder(quadratic, 0.8, 0.8, 2, 50, 50);
+	glPopMatrix();
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(-5, -1, -1);
+	glPushMatrix();
+	glRotatef(90, 1, 0, 0);
+	gluCylinder(quadratic, 0.8, 0.8, 2, 50, 50);
+	glPopMatrix();
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(-5, -1, 1);
+	glPushMatrix();
+	glRotatef(90, 1, 0, 0);
+	gluCylinder(quadratic, 0.8, 0.8, 2, 50, 50);
+	glPopMatrix();
+	glPopMatrix();
 }
