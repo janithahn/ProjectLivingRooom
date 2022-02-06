@@ -378,7 +378,7 @@ void drawPhotoFrameCluster() {
     glRotatef(-2, 0, 0, 1);
         glPushMatrix();
             glScalef(1, 1, 1);
-            photoFrame.drawPhotoFrame(texture[4], texture[6]);
+            photoFrame.drawPhotoFrame(texture[4]);
         glPopMatrix();
     glPopMatrix();
 
@@ -387,7 +387,7 @@ void drawPhotoFrameCluster() {
     glRotatef(-2, 0, 0, 1);
     glPushMatrix();
     glScalef(0, 0.9, 0.85);
-    photoFrame.drawPhotoFrame(texture[6], texture[6]);
+    photoFrame.drawPhotoFrame(texture[9]);
     glPopMatrix();
     glPopMatrix();
     /*--------------------------------------------------------------*/
@@ -401,7 +401,7 @@ void drawPhotoFrameCluster() {
             glRotatef(90, 1, 0, 0);
             glPushMatrix();
                 glScalef(1, 1, 1);
-                photoFrame.drawPhotoFrame(texture[4], texture[6]);
+                photoFrame.drawPhotoFrame(texture[4]);
             glPopMatrix();
         glPopMatrix();
     glPopMatrix();
@@ -413,7 +413,7 @@ void drawPhotoFrameCluster() {
     glRotatef(90, 1, 0, 0);
     glPushMatrix();
     glScalef(0, 0.9, 0.85);
-    photoFrame.drawPhotoFrame(texture[6], texture[6]);
+    photoFrame.drawPhotoFrame(texture[8]);
     glPopMatrix();
     glPopMatrix();
     glPopMatrix();
@@ -428,7 +428,7 @@ void drawPhotoFrameCluster() {
             glRotatef(90, 1, 0, 0);
             glPushMatrix();
                 glScalef(1, 0.5, 0.5);
-                photoFrame.drawPhotoFrame(texture[4], texture[6]);
+                photoFrame.drawPhotoFrame(texture[4]);
             glPopMatrix();
         glPopMatrix();
     glPopMatrix();
@@ -440,7 +440,7 @@ void drawPhotoFrameCluster() {
             glRotatef(90, 1, 0, 0);
             glPushMatrix();
                 glScalef(0, 0.44, 0.42);
-                photoFrame.drawPhotoFrame(texture[6], texture[6]);
+                photoFrame.drawPhotoFrame(texture[15]);
             glPopMatrix();
         glPopMatrix();
     glPopMatrix();
@@ -455,7 +455,7 @@ void drawPhotoFrameCluster() {
             glRotatef(90, 1, 0, 0);
             glPushMatrix();
                 glScalef(1, 0.3, 0.3);
-                photoFrame.drawPhotoFrame(texture[4], texture[6]);
+                photoFrame.drawPhotoFrame(texture[4]);
             glPopMatrix();
         glPopMatrix();
     glPopMatrix();
@@ -467,7 +467,7 @@ void drawPhotoFrameCluster() {
     glRotatef(90, 1, 0, 0);
     glPushMatrix();
     glScalef(0, 0.264, 0.254);
-    photoFrame.drawPhotoFrame(texture[6], texture[6]);
+    photoFrame.drawPhotoFrame(texture[16]);
     glPopMatrix();
     glPopMatrix();
     glPopMatrix();
@@ -480,7 +480,7 @@ void drawPhotoFrameCluster() {
         glRotatef(-2, 0, 0, 1);
         glPushMatrix();
             glScalef(1, 0.6, 0.6);
-            photoFrame.drawPhotoFrame(texture[4], texture[6]);
+            photoFrame.drawPhotoFrame(texture[4]);
         glPopMatrix();
     glPopMatrix();
 
@@ -490,7 +490,7 @@ void drawPhotoFrameCluster() {
     glRotatef(-2, 0, 0, 1);
     glPushMatrix();
     glScalef(0, 0.54, 0.54);
-    photoFrame.drawPhotoFrame(texture[6], texture[6]);
+    photoFrame.drawPhotoFrame(texture[10]);
     glPopMatrix();
     glPopMatrix();
     /*--------------------------------------------------------------*/
@@ -502,7 +502,7 @@ void drawPhotoFrameCluster() {
         glRotatef(-2, 0, 0, 1);
         glPushMatrix();
             glScalef(1, 0.4, 0.4);
-            photoFrame.drawPhotoFrame(texture[4], texture[6]);
+            photoFrame.drawPhotoFrame(texture[4]);
         glPopMatrix();
     glPopMatrix();
 
@@ -511,7 +511,7 @@ void drawPhotoFrameCluster() {
         glRotatef(-2, 0, 0, 1);
         glPushMatrix();
             glScalef(0, 0.35, 0.34);
-            photoFrame.drawPhotoFrame(texture[6], texture[6]);
+            photoFrame.drawPhotoFrame(texture[14]);
         glPopMatrix();
     glPopMatrix();
     /*--------------------------------------------------------------*/
@@ -523,7 +523,7 @@ void drawPhotoFrameCluster() {
         glRotatef(-2, 0, 0, 1);
         glPushMatrix();
             glScalef(1, 0.7, 0.7);
-            photoFrame.drawPhotoFrame(texture[4], texture[6]);
+            photoFrame.drawPhotoFrame(texture[4]);
         glPopMatrix();
     glPopMatrix();
     
@@ -532,7 +532,7 @@ void drawPhotoFrameCluster() {
         glRotatef(-2, 0, 0, 1);
         glPushMatrix();
             glScalef(0, 0.64, 0.64);
-            photoFrame.drawPhotoFrame(texture[6], texture[6]);
+            photoFrame.drawPhotoFrame(texture[13]);
         glPopMatrix();
     glPopMatrix();
     /*--------------------------------------------------------------*/
@@ -546,7 +546,7 @@ void drawPhotoFrameCluster() {
             glRotatef(90, 1, 0, 0);
             glPushMatrix();
                 glScalef(1, 0.7, 0.7);
-                photoFrame.drawPhotoFrame(texture[4], texture[6]);
+                photoFrame.drawPhotoFrame(texture[4]);
             glPopMatrix();
         glPopMatrix();
     glPopMatrix();
@@ -559,7 +559,7 @@ void drawPhotoFrameCluster() {
             glRotatef(90, 1, 0, 0);
             glPushMatrix();
                 glScalef(0, 0.64, 0.64);
-                photoFrame.drawPhotoFrame(texture[6], texture[6]);
+                photoFrame.drawPhotoFrame(texture[17]);
             glPopMatrix();
         glPopMatrix();
     glPopMatrix();
@@ -572,7 +572,7 @@ void drawPhotoFrameCluster() {
         glRotatef(-2, 0, 0, 1);
         glPushMatrix();
             glScalef(1, 0.4, 0.4);
-            photoFrame.drawPhotoFrame(texture[4], texture[6]);
+            photoFrame.drawPhotoFrame(texture[4]);
         glPopMatrix();
     glPopMatrix();
 
@@ -582,7 +582,7 @@ void drawPhotoFrameCluster() {
         glRotatef(-2, 0, 0, 1);
         glPushMatrix();
             glScalef(0, 0.35, 0.34);
-            photoFrame.drawPhotoFrame(texture[6], texture[6]);
+            photoFrame.drawPhotoFrame(texture[18]);
         glPopMatrix();
     glPopMatrix();
     /*--------------------------------------------------------------*/
@@ -594,7 +594,7 @@ void drawPhotoFrameCluster() {
         glRotatef(-2, 0, 0, 1);
         glPushMatrix();
             glScalef(1, 0.4, 0.4);
-            photoFrame.drawPhotoFrame(texture[4], texture[6]);
+            photoFrame.drawPhotoFrame(texture[4]);
         glPopMatrix();
     glPopMatrix();
     
@@ -603,7 +603,7 @@ void drawPhotoFrameCluster() {
         glRotatef(-2, 0, 0, 1);
         glPushMatrix();
             glScalef(0, 0.35, 0.34);
-            photoFrame.drawPhotoFrame(texture[6], texture[6]);
+            photoFrame.drawPhotoFrame(texture[11]);
         glPopMatrix();
     glPopMatrix();
     /*--------------------------------------------------------------*/
@@ -617,7 +617,7 @@ void drawPhotoFrameCluster() {
             glRotatef(90, 1, 0, 0);
             glPushMatrix();
                 glScalef(1, 0.3, 0.3);
-                photoFrame.drawPhotoFrame(texture[4], texture[6]);
+                photoFrame.drawPhotoFrame(texture[4]);
         glPopMatrix();
         glPopMatrix();
     glPopMatrix();
@@ -629,7 +629,7 @@ void drawPhotoFrameCluster() {
             glRotatef(90, 1, 0, 0);
             glPushMatrix();
                 glScalef(0, 0.265, 0.255);
-                photoFrame.drawPhotoFrame(texture[6], texture[6]);
+                photoFrame.drawPhotoFrame(texture[12]);
         glPopMatrix();
         glPopMatrix();
     glPopMatrix();

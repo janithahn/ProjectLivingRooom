@@ -4,7 +4,7 @@
 
 class PhotoFrame {
 	public:
-		void drawPhotoFrame(GLuint frameTexture, GLuint imgTexture);
+		void drawPhotoFrame(GLuint frameTexture);
 };
 
 

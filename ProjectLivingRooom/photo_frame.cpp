@@ -3,7 +3,7 @@
 #include <GL/freeglut_ext.h>
 #include "photo_frame.h"
 
-void PhotoFrame::drawPhotoFrame(GLuint frameTexture, GLuint imgTexture) {
+void PhotoFrame::drawPhotoFrame(GLuint frameTexture) {
 
 	glRotatef(90, 0, 0, 1);
 	glPushMatrix();
