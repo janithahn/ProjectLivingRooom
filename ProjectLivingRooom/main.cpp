@@ -32,7 +32,8 @@ float zoom_per_scroll;
 bool is_holding_mouse = false;
 bool is_updated = false;
 
-Model model;
+Model couchModel;
+Model plantModel;
 /*------------------------------------------------------------------*/
 
 // vertices for the cube
@@ -302,11 +303,11 @@ void drawWalls() {
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0);
         glVertex3f(x, y, -z);
-    glTexCoord2f(0, 1.5);
+    glTexCoord2f(0, 1);
         glVertex3f(x, y, z);
-    glTexCoord2f(1.5, 1.5);
+    glTexCoord2f(1, 1);
         glVertex3f(-x, y, z);
-    glTexCoord2f(1.5, 0);
+    glTexCoord2f(1, 0);
         glVertex3f(-x, y, -z);
     glEnd();
     // END TOP
@@ -648,7 +649,7 @@ void drawPainting() {
     //thick, height, length
     PhotoFrame photoFrame;
     glPushMatrix();
-    glTranslatef(38, -1, -5);
+    glTranslatef(40, -1, -5);
 
     glPushMatrix();
         glPushMatrix();
@@ -765,14 +766,8 @@ void init() {
     glEnable(GL_TEXTURE_2D);
     loadTexture();
 
-    model.load("Models/Lowpoly_Fox.obj");
-
-    pos_x = model.pos_x;
-    pos_y = model.pos_y;
-    pos_z = model.pos_z - 1.0f;
-
-    zoom_per_scroll = -model.pos_z / 10.0f;
-
+    couchModel.load("Models/couch.obj");
+    plantModel.load("Models/table.obj");
 }
 
 void display() {
@@ -823,16 +818,26 @@ void display() {
 
     glPushMatrix();
 
-    /*glBindTexture(GL_TEXTURE_2D, texture[4]);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_CLAMP_TO_BORDER);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_CLAMP_TO_BORDER);*/
-
-    glTranslatef(0, 5, 0);
+    //couch
+    glTranslatef(0, 0, 6);
         glPushMatrix();
-            glScalef(0.05, 0.05, 0.05);
+            glScalef(4.3, 4.3, 4.3);
             glColor3f(1, 1, 1);
-            model.draw();
+            couchModel.draw();
+        glPopMatrix();
+    glPopMatrix();
+
+    glPushMatrix();
+
+    //table
+    glTranslatef(0, 1.8, -8);
+        glPushMatrix();
+            //glScalef(4.3, 4.3, 4.3);
+            glPushMatrix();
+                glRotatef(90, 0, 1, 0);
+                glColor3f(1, 1, 1);
+                plantModel.draw();
+            glPopMatrix();
         glPopMatrix();
     glPopMatrix();
 
