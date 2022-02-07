@@ -12,10 +12,28 @@
 #include "table.h"
 #include "lamp.h"
 #include "photo_frame.h"
+#include "main.h"
 
 #define GetCurrentDir _getcwd
 
 using namespace std;
+
+
+/*-----------------------LOADING OBJECTS-----------------------------*/
+std::string model_name = "C:\\Work\\University\\CS308(Practical)\\Project\\ProjectLivingRooom\\ProjectLivingRooom\\Models\\Earth.obj";
+
+float pos_x, pos_y, pos_z;
+float angle_x = 30.0f, angle_y = 0.0f;
+
+int x_old = 0, y_old = 0;
+int current_scroll = 5;
+float zoom_per_scroll;
+
+bool is_holding_mouse = false;
+bool is_updated = false;
+
+Model model;
+/*------------------------------------------------------------------*/
 
 // vertices for the cube
 GLfloat x = 20.0f;
@@ -326,10 +344,10 @@ void drawTable() {
 void drawTableLamp() {
     Lamp tableLamp;
     glPushMatrix();
-    glTranslatef(0, -3, -4);
+    glTranslatef(16, -3, -16);
     glScalef(3.0f, 3.0f, 3.0f);
     //glRotatef(-30.0, 0.0, 1.0, 0.0);
-    tableLamp.drawTableLamp();
+    tableLamp.drawTableLamp(texture[24]);
     glPopMatrix();
 }
 
@@ -747,6 +765,14 @@ void init() {
     glEnable(GL_TEXTURE_2D);
     loadTexture();
 
+    model.load("Models/Lowpoly_Fox.obj");
+
+    pos_x = model.pos_x;
+    pos_y = model.pos_y;
+    pos_z = model.pos_z - 1.0f;
+
+    zoom_per_scroll = -model.pos_z / 10.0f;
+
 }
 
 void display() {
@@ -795,8 +821,27 @@ void display() {
 
     glPopMatrix();
 
+    glPushMatrix();
+
+    /*glBindTexture(GL_TEXTURE_2D, texture[4]);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_CLAMP_TO_BORDER);*/
+
+    glTranslatef(0, 5, 0);
+        glPushMatrix();
+            glScalef(0.05, 0.05, 0.05);
+            glColor3f(1, 1, 1);
+            model.draw();
+        glPopMatrix();
+    glPopMatrix();
+
     drawAxes();
     glPopMatrix();
+
+    //glTranslatef(pos_x, pos_y, pos_z);
+    //glRotatef(angle_x, 1.0f, 0.0f, 0.0f);
+    //glRotatef(angle_y, 0.0f, 1.0f, 0.0f);
 
     glutSwapBuffers();
 
@@ -859,7 +904,62 @@ void Timer(int x) {
 
     //printf("%f, %f, %f\n", camX, camY, camZ);
 
-    glutTimerFunc(60, Timer, 1);
+    if (is_updated) {
+        is_updated = false;
+        glutPostRedisplay();
+    }
+
+    glutTimerFunc(60, Timer, 0);
+}
+
+void mouse(int button, int state, int x, int y) {
+    is_updated = true;
+
+    if (button == GLUT_LEFT_BUTTON) {
+        if (state == GLUT_DOWN) {
+            x_old = x;
+            y_old = y;
+            is_holding_mouse = true;
+        }
+        else
+            is_holding_mouse = false;
+    }
+    else if (state == GLUT_UP) {
+        switch (button) {
+        case 3:
+            if (current_scroll > 0) {
+                current_scroll--;
+                pos_z += zoom_per_scroll;
+            }
+            break;
+        case 4:
+            if (current_scroll < 15) {
+                current_scroll++;
+                pos_z -= zoom_per_scroll;
+            }
+            break;
+        }
+    }
+}
+
+void motion(int x, int y) {
+    if (is_holding_mouse) {
+        is_updated = true;
+
+        angle_y += (x - x_old);
+        x_old = x;
+        if (angle_y > 360.0f)
+            angle_y -= 360.0f;
+        else if (angle_y < 0.0f)
+            angle_y += 360.0f;
+
+        angle_x += (y - y_old);
+        y_old = y;
+        if (angle_x > 90.0f)
+            angle_x = 90.0f;
+        else if (angle_x < -90.0f)
+            angle_x = -90.0f;
+    }
 }
 
 void changeSize(GLsizei w, GLsizei h) {
@@ -892,6 +992,11 @@ int main(int argc, char** argv) {
     // keyboard function activation
     glutKeyboardFunc(keyboard);
     glutSpecialFunc(keyboardSpecial);
+
+    //3D Object
+    glutMouseFunc(mouse);
+    glutMotionFunc(motion);
+    //glutTimerFunc(0, Timer, 0);
 
     //glutTimerFunc(60.0, Timer, 1);
     init();
