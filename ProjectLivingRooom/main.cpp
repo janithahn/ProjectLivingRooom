@@ -22,19 +22,16 @@ using namespace std;
 /*-----------------------LOADING OBJECTS-----------------------------*/
 std::string model_name = "C:\\Work\\University\\CS308(Practical)\\Project\\ProjectLivingRooom\\ProjectLivingRooom\\Models\\Earth.obj";
 
-float pos_x, pos_y, pos_z;
-float angle_x = 30.0f, angle_y = 0.0f;
-
-int x_old = 0, y_old = 0;
-int current_scroll = 5;
-float zoom_per_scroll;
-
-bool is_holding_mouse = false;
-bool is_updated = false;
-
+//obj models
 Model couchModel;
 Model plantModel;
+Model fanModel;
+Model fanHolderModel;
 /*------------------------------------------------------------------*/
+
+//animation
+bool isAnimating = false;
+int animateRotation = 0;
 
 // vertices for the cube
 GLfloat x = 20.0f;
@@ -766,8 +763,10 @@ void init() {
     glEnable(GL_TEXTURE_2D);
     loadTexture();
 
-    couchModel.load("Models/couch.obj");
-    plantModel.load("Models/table.obj");
+    couchModel.load("Models/couch/couch.obj");
+    plantModel.load("Models/table/table.obj");
+    fanModel.load("Models/ceiling_fan/ceiling_fan.obj");
+    fanHolderModel.load("Models/ceiling_fan/ceiling_fan_holder.obj");
 }
 
 void display() {
@@ -827,16 +826,25 @@ void display() {
         glPopMatrix();
     glPopMatrix();
 
-    glPushMatrix();
-
     //table
+    glPushMatrix();
     glTranslatef(0, 1.8, -8);
         glPushMatrix();
-            //glScalef(4.3, 4.3, 4.3);
+            glRotatef(90, 0, 1, 0);
+            glColor3f(1, 1, 1);
+            plantModel.draw();
+        glPopMatrix();
+    glPopMatrix();
+
+    //ceiling fan
+    glPushMatrix();
+    glTranslatef(0, 17.8, -2);
+        glPushMatrix();
+            glColor3f(1, 1, 1);
             glPushMatrix();
-                glRotatef(90, 0, 1, 0);
-                glColor3f(1, 1, 1);
-                plantModel.draw();
+                fanHolderModel.draw();
+                glRotatef(animateRotation, -0.02, 1, 0.02);
+                fanModel.draw();
             glPopMatrix();
         glPopMatrix();
     glPopMatrix();
@@ -850,6 +858,36 @@ void display() {
 
     glutSwapBuffers();
 
+}
+
+int currentFanSpeed = 0;
+
+void Timer(int x) {
+    //animateRotation += animateRotation >= 360.0 ? -animateRotation : 10;
+    //glutPostRedisplay();
+
+    //printf("%f, %f, %f\n", camX, camY, camZ);
+    printf("Animation: %i\n", animateRotation);
+    printf("CurrentFanSpeed: %i\n", currentFanSpeed);
+    printf("IsAnimating: %d\n\n", isAnimating);
+
+    if (isAnimating) {
+        animateRotation += currentFanSpeed;
+        glutTimerFunc(30, Timer, 0);
+        glutPostRedisplay();
+    }
+}
+
+void startAnimation(GLfloat speed) {
+    if (!isAnimating) {
+        isAnimating = true;
+        animateRotation = speed;
+        glutTimerFunc(60, Timer, 0);
+    }
+}
+
+void pauseAnimation() {
+    isAnimating = false;
 }
 
 void keyboardSpecial(int key, int x, int y) {
@@ -899,72 +937,28 @@ void keyboard(unsigned char key, int x, int y) {
     if (key == '2')
         glEnable(GL_LIGHT2);
 
-    glutPostRedisplay();
-
-}
-
-void Timer(int x) {
-    //animateRotation += animateRotation >= 360.0 ? -animateRotation : 5;
-    glutPostRedisplay();
-
-    //printf("%f, %f, %f\n", camX, camY, camZ);
-
-    if (is_updated) {
-        is_updated = false;
-        glutPostRedisplay();
-    }
-
-    glutTimerFunc(60, Timer, 0);
-}
-
-void mouse(int button, int state, int x, int y) {
-    is_updated = true;
-
-    if (button == GLUT_LEFT_BUTTON) {
-        if (state == GLUT_DOWN) {
-            x_old = x;
-            y_old = y;
-            is_holding_mouse = true;
+    //fans
+    if (key == ' ') {
+        if (isAnimating && currentFanSpeed == 10) {
+            startAnimation(20);
+            currentFanSpeed = 20;
         }
-        else
-            is_holding_mouse = false;
-    }
-    else if (state == GLUT_UP) {
-        switch (button) {
-        case 3:
-            if (current_scroll > 0) {
-                current_scroll--;
-                pos_z += zoom_per_scroll;
-            }
-            break;
-        case 4:
-            if (current_scroll < 15) {
-                current_scroll++;
-                pos_z -= zoom_per_scroll;
-            }
-            break;
+        else if (isAnimating) {
+            pauseAnimation();
+        }
+        else {
+            startAnimation(10);
+            currentFanSpeed = 10;
         }
     }
-}
+    /*if (key == 'f')
+        if (animateRotation == 10)
+            startAnimation(20);
+        if (animateRotation == 20)
+            pauseAnimation();*/
 
-void motion(int x, int y) {
-    if (is_holding_mouse) {
-        is_updated = true;
+    glutPostRedisplay();
 
-        angle_y += (x - x_old);
-        x_old = x;
-        if (angle_y > 360.0f)
-            angle_y -= 360.0f;
-        else if (angle_y < 0.0f)
-            angle_y += 360.0f;
-
-        angle_x += (y - y_old);
-        y_old = y;
-        if (angle_x > 90.0f)
-            angle_x = 90.0f;
-        else if (angle_x < -90.0f)
-            angle_x = -90.0f;
-    }
 }
 
 void changeSize(GLsizei w, GLsizei h) {
@@ -998,12 +992,9 @@ int main(int argc, char** argv) {
     glutKeyboardFunc(keyboard);
     glutSpecialFunc(keyboardSpecial);
 
-    //3D Object
-    glutMouseFunc(mouse);
-    glutMotionFunc(motion);
-    //glutTimerFunc(0, Timer, 0);
-
+    animateRotation = 0;
     //glutTimerFunc(60.0, Timer, 1);
+
     init();
     glutMainLoop();
 
