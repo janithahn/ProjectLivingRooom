@@ -123,6 +123,20 @@ void initLight() {
     glMateriali(GL_FRONT, GL_SHININESS, 50);
 }
 
+void setMaterials() {
+    float mat_ambient[] = { 0.329f, 0.223f, 0.0274f, 1.0f };
+    float mat_diffuse[] = { 0.780f, 0.568f, 0.113f, 1.0f };
+    float mat_specular[] = { 0.992f, 0.941f, 0.807f, 1.0f };
+
+    float shine[] = { 27.897f };
+
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
+    glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, shine);
+}
+
+
 void drawAxes() {
 
     glBegin(GL_LINES);
@@ -787,6 +801,7 @@ void display() {
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    setMaterials();
 
     glPushMatrix();
 
@@ -803,7 +818,7 @@ void display() {
 
     glColor3f(1.0, 1.0, 1.0);
 
-    DrawGrid();
+    //DrawGrid();
 
     //walls, floor and ceiling
     glPushMatrix();
@@ -863,7 +878,7 @@ void display() {
         glPopMatrix();
     glPopMatrix();
 
-    drawAxes();
+    //drawAxes();
     glPopMatrix();
 
     //glTranslatef(pos_x, pos_y, pos_z);
@@ -915,10 +930,10 @@ void keyboardSpecial(int key, int x, int y) {
         moveZ -= 1;
 
     if (key == GLUT_KEY_LEFT)
-        rotY -= 5.0;
+        rotY -= 2.0;
 
     if (key == GLUT_KEY_RIGHT)
-        rotY += 5.0;
+        rotY += 2.0;
 
     glutPostRedisplay();
 }
