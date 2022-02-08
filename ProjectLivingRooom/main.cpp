@@ -63,7 +63,7 @@ GLfloat   ambientLight[] = { 0.4, 0.4, 0.4, 1.0 };
 GLfloat L1_Ambient[] = { 0.5, 0.5, 0.5, 1.0 };
 GLfloat L1_Diffuse[] = { 1, 1, 1, 5.0 };
 GLfloat L1_Specular[] = { 1.0, 1.0, 0.0, 10.0 };   //Declaration of the specular component of the light_1
-GLfloat L1_postion[] = { 0, -3, 0, 1.0 };
+GLfloat L1_postion[] = { 10, -3, -20, 1.0 };
 GLfloat L1_direction[] = { 0, -1, 0, 0 };
 
 //light 2 (wall lamp1)
@@ -72,6 +72,13 @@ GLfloat L2_Diffuse[] = { 0.6, 0.6, 0.6, 1.0 };
 GLfloat L2_Specular[] = { 0.3, 0.3, 0.3, 1.0 };   //Declaration of the specular component of the light_2
 GLfloat L2_postion[] = { 10, 25, -20, 1.0 };
 GLfloat L2_direction[] = { 0, 0, 0 };
+
+//light 3 (wall lamp1)
+GLfloat L3_Ambient[] = { 0.2, 0.2, 0.2, 1.0 };
+GLfloat L3_Diffuse[] = { 0.6, 0.6, 0.6, 1.0 };
+GLfloat L3_Specular[] = { 0.3, 0.3, 0.3, 1.0 };   //Declaration of the specular component of the light_3
+GLfloat L3_postion[] = { -10, 25, -20, 1.0 };
+GLfloat L3_direction[] = { 0, 0, 0 };
 
 GLfloat globalAmbient[] = { 0.8, 0.8, 0.8, 1.0 };
 
@@ -102,6 +109,13 @@ void initLight() {
     //glLightf(GL_LIGHT2, GL_CONSTANT_ATTENUATION, 1.5);
     //glLightf(GL_LIGHT2, GL_LINEAR_ATTENUATION, 0.5);
     //glLightf(GL_LIGHT2, GL_QUADRATIC_ATTENUATION, 0.1);
+
+    glLightfv(GL_LIGHT3, GL_DIFFUSE, L3_Diffuse);
+    glLightfv(GL_LIGHT3, GL_SPECULAR, L3_Specular);
+    glLightfv(GL_LIGHT3, GL_POSITION, L3_postion);
+    glLightfv(GL_LIGHT3, GL_SPOT_DIRECTION, L3_direction);
+    //glLightf(GL_LIGHT2, GL_SPOT_CUTOFF, 45.0);
+    glLightf(GL_LIGHT3, GL_SPOT_EXPONENT, 2);
 
     //Declaration of the ligt reflecting properties for the materials
     GLfloat specularReflectance[] = { 1.0, 1.0, 1.0, 1.0 };
@@ -939,6 +953,11 @@ void keyboard(unsigned char key, int x, int y) {
         glDisable(GL_LIGHT2);
     if (key == '2')
         glEnable(GL_LIGHT2);
+
+    if (key == '#')
+        glDisable(GL_LIGHT3);
+    if (key == '3')
+        glEnable(GL_LIGHT3);
 
     //fans
     if (key == ' ') {
