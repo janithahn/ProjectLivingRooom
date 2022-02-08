@@ -41,15 +41,15 @@ GLfloat z = 20.0f;
 // variables to move outermost Object Frame (to move all the rendered environment)
 GLfloat moveX = 0.0f;
 GLfloat moveY = 0.0f;
-GLfloat moveZ = 0.0f;
+GLfloat moveZ = -11.0f;
 
 // variables to rotate outermost Object Frame (to move all the rendered environment)
 GLfloat rotX = 0.0f;
-GLfloat rotY = -10.0f;
+GLfloat rotY = -130.0f;
 GLfloat rotZ = 0.0f;
 
 //variables to move the camera
-GLfloat camY = -3.0f;
+GLfloat camY = 2.0f;
 GLfloat camX = 0.0f;
 GLfloat camZ = 0.0f;
 
@@ -867,9 +867,12 @@ void Timer(int x) {
     //glutPostRedisplay();
 
     //printf("%f, %f, %f\n", camX, camY, camZ);
-    printf("Animation: %i\n", animateRotation);
-    printf("CurrentFanSpeed: %i\n", currentFanSpeed);
-    printf("IsAnimating: %d\n\n", isAnimating);
+    //printf("%f, %f, %f\n", rotX, rotY, rotZ);
+    //printf("%f, %f, %f\n", moveX, moveY, moveZ);
+
+    //printf("Animation: %i\n", animateRotation);
+    //printf("CurrentFanSpeed: %i\n", currentFanSpeed);
+    //printf("IsAnimating: %d\n\n", isAnimating);
 
     if (isAnimating) {
         animateRotation += currentFanSpeed;
@@ -951,11 +954,6 @@ void keyboard(unsigned char key, int x, int y) {
             currentFanSpeed = 10;
         }
     }
-    /*if (key == 'f')
-        if (animateRotation == 10)
-            startAnimation(20);
-        if (animateRotation == 20)
-            pauseAnimation();*/
 
     glutPostRedisplay();
 
