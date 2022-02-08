@@ -1,4 +1,4 @@
-# 3D Living Rooom with OpenGL
+# 3D Living Room with OpenGL
 ### Computer Graphics Project
 This is a Visual Studio 2019 OpenGL project written in C++ with the help of the following libraries and references. The project demonstrates a 3D living room with all the following features.
 * 3D objects created with `glu` and `glut` functions as well as with using Blender(`.obj` files for the **couch**, **ceiling fan**, and the **table**).
