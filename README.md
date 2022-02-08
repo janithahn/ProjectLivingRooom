@@ -21,3 +21,9 @@ This is a Visual Studio 2019 OpenGL project written in C++ with the help of the 
 
 ## Screenshots
 ![Living Room Screenshot](https://github.com/s16417/ProjectLivingRooom/blob/master/screenshots/Capture.PNG)
+
+
+
+
+https://user-images.githubusercontent.com/64242868/152974897-3205afb8-ffc4-4000-945e-63043c9c0bf8.mp4
+
