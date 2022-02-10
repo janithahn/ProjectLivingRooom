@@ -21,6 +21,8 @@ $(SolutionDir)vendor\glew\lib;$(SolutionDir)vendor\freeglut\lib;$(SolutionDir)ve
 
 * C/C++: $(SolutionDir)vendor\additional\Library\include;$(SolutionDir)vendor\glew\include;$(SolutionDir)vendor\freeglut\include;$(SolutionDir)vendor\SOIL2\include;$(SolutionDir)vendor\dirent\include;$(SolutionDir)vendor\GL_files\include;%(AdditionalIncludeDirectories)
 
+* Change `Solution Platform` to `x86` not `x64`.
+
 ## References 
 * https://learnopengl.com/Getting-started/Textures
 * [Loading 3D objects into OpenGL C++](https://github.com/WHKnightZ/OpenGL-Load-Model)
