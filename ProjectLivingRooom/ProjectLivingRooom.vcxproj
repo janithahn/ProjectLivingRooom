@@ -122,10 +122,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)vendor\additional\Library\include;$(SolutionDir)vendor\glew\include;$(SolutionDir)vendor\freeglut\include;$(SolutionDir)vendor\SOIL2\include;$(SolutionDir)vendor\dirent\include;$(SolutionDir)vendor\GL_files\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)vendor\glew\lib;$(SolutionDir)vendor\freeglut\lib;$(SolutionDir)vendor\SOIL2\lib;$(SolutionDir)vendor\GL_files\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
