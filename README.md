@@ -15,6 +15,12 @@ This is a Visual Studio 2019 OpenGL project written in C++ with the help of the 
 * [SOIL2](https://github.com/SpartanJ/SOIL2)
 * [dirent](https://github.com/tronkko/dirent)
 
+## Library Paths
+* Linker:
+$(SolutionDir)vendor\glew\lib;$(SolutionDir)vendor\freeglut\lib;$(SolutionDir)vendor\SOIL2\lib;$(SolutionDir)vendor\GL_files\lib;%(AdditionalLibraryDirectories)
+
+* C/C++: $(SolutionDir)vendor\additional\Library\include;$(SolutionDir)vendor\glew\include;$(SolutionDir)vendor\freeglut\include;$(SolutionDir)vendor\SOIL2\include;$(SolutionDir)vendor\dirent\include;$(SolutionDir)vendor\GL_files\include;%(AdditionalIncludeDirectories)
+
 ## References 
 * https://learnopengl.com/Getting-started/Textures
 * [Loading 3D objects into OpenGL C++](https://github.com/WHKnightZ/OpenGL-Load-Model)
